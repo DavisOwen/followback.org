@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for error in form.username.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  {% for error in form.password.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  {% for error in form.confirm_password.errors %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endfor %}
+  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
+    <div class="card-header"><h1 class="col-md-4 offset-md-4">Register</h1></div>
+    <div class="card-block">
+    <form action="" method="post" name="register" class="col-md-4 offset-md-4">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>Username*</label>
+            {{ form.username(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>Password*</label>
+          {{ form.password(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>Confirm Password*</label>
+          {{ form.confirm_password(class_="form-control") }}
+        </div>
+        <input type="submit" value="Register" class="btn btn-dark">
+    </form>
+    </div>
+  </div>
+{% endblock %}

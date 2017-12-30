@@ -1,0 +1,61 @@
+<html>
+  <head>
+    {% if user %}
+    <title>Welcome {{ user }} </title>
+    {% else %}
+    <title>Welcome to Followback</title>
+    {% endif %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Custom CSS -->
+
+    <link rel= "stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <link rel= "stylesheet" href="{{ url_for('static',filename='css/device-mockups.css') }}">
+
+		<!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+		<!-- Boostrap Core CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg bg-light lato">
+      <a class="navbar-brand btn" href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static',filename='img/fb_and_text_no_background_resize.png') }}"></a>
+        {% if g.user.is_authenticated %}
+          <ul class="navbar-nav mr-auto">
+            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('start_bot',username=g.user.username) }}" role="button">Start a Bot</a></li>
+          </ul>
+          <ul class="navbar-nav mr-auto">
+            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('all_bot_status',username=g.user.username) }}" role="button">Bot Status</a></li>
+          </ul>
+          <ul class="navbar-nav">
+            <li><a class="nav-item nav-link text-white btn btn-danger" href="{{ url_for('logout') }}">Logout</a></li>
+          </ul>
+        {% else %}
+          <ul class="navbar-nav mr-auto">
+            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('register') }}" role="button">Register</a></li>
+          </ul>
+          <ul class="navbar-nav">
+            <li><a class="nav-item nav-link text-white btn btn-danger" href="{{ url_for('login') }}">Login</a></li>
+          <ul>
+        {% endif %}
+    </nav>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+</html>

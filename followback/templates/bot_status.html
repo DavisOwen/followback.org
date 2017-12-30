@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div>Bot Status</div>
+  <div>{{ status.state }}</div>
+  {% if status.info %}
+    <div>{{ status.info.get('likes') }}</div>
+    <div>{{ status.info.get('follows') }}</div>
+    <div>{{ status.info.get('start_time') }}</div>
+    <div>{{ status.info.get('end_time') }}</div>
+  {% endif %}
+    <form action="{{ url_for('bot_status',username=g.user.username,bot_id=bot_id) }}" method="post">
+      <input type="submit" value="Stop Bot">
+    </form>
+{% endblock %}
+

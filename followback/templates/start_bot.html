@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for error in form.insta_username.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  {% for error in form.insta_password.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  {% for error in form.pages.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  {% if error_msg %}
+    <div class="alert alert-danger" role="alert">{{ error_msg }}</div>
+  {% endif %}
+  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
+    <div class="card-header"><h1 class="col-md-4 offset-md-4">Bot Information</h1></div>
+    <div class="card-block">
+    <form action="" method="post" name="login" class="col-md-4 offset-md-4">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>Instagram Username</label>
+          {{ form.insta_username(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>Instagram Password</label>
+          {{ form.insta_password(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label class="form-check-label">
+            Pages
+          </label>
+          {{ form.pages(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>Likes Per Day</label>
+          {{ form.likes_per_day(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>Follows Per Day</label>
+          {{ form.follows_per_day(class_="form-control") }}
+        </div>
+         <div class="form-group">
+          <label>Make</label>
+          {{ form.follows_per_day(class_="form-control") }}
+        </div>
+      <input type="submit" value="Sign In" class="btn btn-dark">
+    </form>
+    </div>
+  </div>
+{% endblock %}

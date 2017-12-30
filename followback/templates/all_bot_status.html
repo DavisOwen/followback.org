@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div>Current Bots</div>
+  {% for user in g.user.insta_users %}
+    {% if user.bot_id %}
+      <a href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">{{ user.username }} Bot</a>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+

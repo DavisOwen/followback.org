@@ -1,0 +1,29 @@
+body{
+  padding-top:70px;
+}
+
+.lato {
+  font-family: 'Lato',sans-serif;
+}
+
+.muli {
+  font-family: 'Muli',sans-serif;
+}
+
+.bw-grad{
+  background: linear-gradient(90deg, white, black);
+}
+
+.br-grad{
+  background: linear-gradient(90deg, red, black);
+}
+
+.laptop-bg{
+  background-image: url("../img/laptop-code.jpeg");
+  background-size:contain;
+}
+
+.logo{
+  width:auto;
+  height:50px;
+}

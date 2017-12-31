@@ -132,12 +132,10 @@ class InstaBot:
         })
         r = self.s.get(self.url)
         self.s.headers.update({'X-CSRFToken': r.cookies['csrftoken']})
-        time.sleep(5 * random.random())
         login = self.s.post(
             self.url_login, data=self.login_post, allow_redirects=True)
         self.s.headers.update({'X-CSRFToken': login.cookies['csrftoken']})
         self.csrftoken = login.cookies['csrftoken']
-        time.sleep(5 * random.random())
 
         if login.status_code == 200:
             r = self.s.get('https://www.instagram.com/')

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+  {% endfor %}
   {% for error in form.username.errors %}
     <div class="alert alert-danger" role="alert">{{ error }}</div>
   {% endfor %}

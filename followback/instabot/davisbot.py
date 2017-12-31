@@ -10,22 +10,10 @@ import datetime
 import random
 import os
 import traceback
+import signal
 #import wget
 
 
-#def getPastFollowed(pickle_file,pages):
-#    if os.path.isfile(pickle_file):
-#        following, max_id = pickle.load(open(pickle_file,'rb'))
-#        for page in pages:
-#            if page not in max_id.keys():
-#                max_id[page] = ''
-#    else:
-#        following = list()
-#        max_id = dict((el,'') for el in pages)
-#
-#    return following,max_id
-#
-#
 #def getUploadList(upload_file):
 #    reader = csv.reader(upload_file)
 #    my_list = list(reader)
@@ -35,13 +23,43 @@ import traceback
 #            upload_list.append(obj)
 #    return upload_list
 
+'''
+
+Instagram Bot for the followback application
+
+Needs username, password, pages to scrape, max follows per day, max likes per day,
+
+and a boolean make.
+
+When make == True, the Bot will make a whitelist of all the users the instagram user
+
+is currently following. When make == False, the Bot will not make a whitelist, and 
+
+instead will search the database for users saved in the insta users whitelist, created
+
+when make == True.
+
+Note: poster and getter refer to two separate instagramAPI's. The poster is used for 
+
+post requests, such as liking, following, and unfollowing. The getter is for get requests,
+
+such as scraping users. The poster is simply interacting via requests directly to instagram.com
+
+via http, and the getter is using instagrams private api. The tradeoff lies in the fact that the 
+
+private api does not like very many requests per day, whereas the http requests one can do many more.
+
+However, the http api does not allow one to scrape users from profiles.
+
+'''
+
 class Bot():
 
     def __init__(self,args):
         self.username = args['username']
         self.password = args['password']
         self.pages = args['pages']
-        make = args['make']
+        self.make = args['make']
         self.follows_per_day = args['follows_per_day']
         likes_per_day = args['likes_per_day']
         self.uploads_per_day = args['uploads_per_day']
@@ -49,10 +67,6 @@ class Bot():
         pic_path = args['pic_path']
         scrape_user = args['scrape_user']
         upload_file = args['upload_file']
-        self.user = self.get_user(self.username)
-        self.following = self.get_followed()
-        self.max_id = self.get_max_id(self.pages)
-        self.whitelist = self.get_whitelist(make)
         self.like_wait = (1.0/float(likes_per_day/57600.0))
         self.follow_wait = (1.0/float(self.follows_per_day/57600.0))
         self.user_followers = list()
@@ -63,7 +77,25 @@ class Bot():
             self.upload_setup(self.uploads_per_day,uploadFile,\
                             scrape_user,caption,pic_path)
 
+    def set_up(self):
+        '''
+        Gets user, all past followers
+
+        the max_id status of each page, 
+        
+        and the users whitelist
+        '''
+        self.user = self.get_user(self.username)
+        self.following = self.get_followed()
+        self.max_id = self.get_max_id(self.pages)
+        self.whitelist = self.get_whitelist(self.make)
+
     def try_login_poster(self):
+        '''
+        Try logging into the
+
+        poster
+        '''
         self.poster = InstaBot(self.username,self.password)
         status = self.poster.try_login()
         return status
@@ -74,30 +106,59 @@ class Bot():
         
             and cookie data 
 
-            from login 
+            from login.
+
+            Will login poster
         '''
         self.poster = InstaBot(self.username,self.password)
         self.poster.login(cookies,headers)
 
     def handle_checkpoint_poster(self,code,cookies,headers,response):
+        '''
+        Handles the checkpoint situation
+        '''
         self.poster = InstaBot(self.username,self.password)
         status = self.poster.handle_checkpoint(code,cookies,headers,response)
         return status
 
     def login_getter(self):
+        '''
+        Logs into getter,
+
+        should have no problems
+        
+        if one can log into poster
+        '''
         self.getter = InstagramAPI(self.username,self.password)
         status = self.getter.login()
         return status
 
     def get_user(self,username):
+        '''
+        Gets the insta user
+
+        with its history from 
+
+        the database
+        '''
         user = InstaUser.query.filter_by(username=username).first()
         return user
 
     def get_followed(self):
+        '''
+        Gets all people previously
+
+        followed by the insta user
+        '''
         followed = [ x.pk for x in self.user.followed ]
         return followed
 
     def get_max_id(self,pages):
+        '''
+        Gets the max_id's for each page
+
+        of the current bot instance
+        '''
         max_id = dict((el.page,el.max_id) for el in self.user.max_id)
         for page in pages:
             if page not in max_id.keys():
@@ -148,12 +209,26 @@ class Bot():
 
         of users
         '''
+
+        class SignalHandler(object):
+            def __init__(self,bot):
+                self.retval = None
+            def signal_handler(self, sig, frm):
+                self.retval = True
+
+        class BotStop(Exception):
+            pass
+                
+        s = SignalHandler(self)
+        signal.signal(signal.SIGINT, s.signal_handler)
         self.likes = 0
         self.follows = 0
         self.last_like = self.last_follow = time.time()
         start_time = start_time
         while True:
             try:
+                if s.retval:
+                    raise BotStop("Bot stopped by user")
                 #time elapsed since unfollow event
                 time_elapsed = datetime.datetime.utcnow()-start_time 
                 # Waiting to begin loop after unfollowing
@@ -200,21 +275,22 @@ class Bot():
                         self.upload()
             except Exception as e:
                 traceback.print_exc()
-                state.update_state(state="ENDING",
-                                    meta={"likes":self.likes,
-                                        "follows":self.follows,
-                                        "start_time":start_time,
-                                        "end_time":datetime.datetime.utcnow()})
+                self.user.likes = self.likes
+                self.user.follows = self.follows
+                self.user.start_time = start_time
+                self.user.end_time = datetime.datetime.utcnow()
+                results = dict({"state":"STOPPED","likes":self.likes,
+                                "follows":self.follows,"start_time":start_time,
+                                "end_time":datetime.datetime.utcnow()})
                 db.session.add(self.user)
                 db.session.commit()
                 self.getter.logout()
                 self.poster.logout()
-                sys.exit(0)
+                return results
 
     def scrape_users(self):
         '''Scrapes users from a particular page'''
 
-        print('scraping users')
         def addMaxID(page,max_id):
             for el in self.user.max_id:
                 if el.page == page:
@@ -227,6 +303,7 @@ class Bot():
         else:
             self.page_iter = 0
         page = self.pages[self.page_iter]
+        print('Scraping from %s' % (page))
         success = self.getter.searchUsername(page)
         user_id = self.getter.LastJson
         if success:

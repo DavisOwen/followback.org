@@ -44,29 +44,6 @@ class LoginForm(Form):
         self.user = user
         return True
 
-class EditForm(Form):
-    username = StringField('username', 
-                            validators=[DataRequired()])
-    about_me = TextAreaField('about_me', 
-                            validators=[Length(min=0, max=140)])
-
-    def __init__(self, original_username, *args, **kwargs):
-        Form.__init__(self, *args, **kwargs)
-        self.original_username = original_username
-
-    def validate(self):
-        rv = Form.validate(self)
-        if not rv:
-            return False
-        if self.username.data == self.original_username:
-            return True
-        user = User.query.filter_by(username=self.username.data).first()
-        if user is not None:
-            self.username.errors.append('This username is already in use.\
-                                        Please choose another one.')
-            return False
-        return True
-
 class BotForm(Form):
   insta_username = StringField('insta_username',
                                 validators=[DataRequired()])
@@ -82,29 +59,39 @@ class BotForm(Form):
                                 validators=[DataRequired()],
                                 default=400)
 
-  make = BooleanField('make',default=False)
+  make = BooleanField('make', default=False)
 
-  new_user =  BooleanField('new_user',
-                            default=False)
+  new_user =  BooleanField('new_user',default=False)
+
+  pk = StringField('pk')
 
   def validate(self):
     rv = Form.validate(self)
     if not rv:
         return False
     import requests
-    req_string = "http://www.instagram.com/%s"
+    req_string = "https://www.instagram.com/%s"
+    user_info_string = "https://www.instagram.com/%s/?__a=1"
+    req = requests.get(req_string % (self.insta_username.data))
+    if req.status_code != 200:
+        self.insta_username.errors.append('User %s does not exist' % self.insta_username.data)
+        return False
     for page in self.pages.data:
        req = requests.get(req_string % (page))
        if req.status_code != 200:
            self.pages.errors.append('Page %s does not exist' % page) 
            return False
-    insta_user = InstaUser.query.filter_by(username=self.insta_username.data).first()
+    req = requests.get(user_info_string % (self.insta_username.data))
+    json = req.json()
+    pk = json['user']['id']
+    insta_user = InstaUser.query.filter_by(pk=pk).first()
     if insta_user is not None:
         if insta_user not in current_user.insta_users:
             self.insta_username.errors.append('Instagram Account %s already registered with another account' % (self.insta_username.data))
             return False
     else:
         self.new_user.data = True
+    self.pk.data = pk
     return True
 
 class CheckpointForm(Form):

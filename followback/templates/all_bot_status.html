@@ -2,10 +2,15 @@
 
 {% block content %}
   <div>Current Bots</div>
-  {% for user in g.user.insta_users %}
-    {% if user.bot_id %}
-      <a href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">{{ user.username }} Bot</a>
-    {% endif %}
-  {% endfor %}
+  {% if g.user.insta_users %}
+    {% for user in g.user.insta_users %}
+      {% if user.bot_id %}
+        <a href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">{{ user.username }} Bot</a>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    No bots started! 
+    <a href="{{ url_for('start_bot',username=g.user.username) }}">Start one now!</a>
+  {% endif %}
 {% endblock %}
 

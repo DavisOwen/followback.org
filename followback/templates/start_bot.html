@@ -10,9 +10,9 @@
   {% for error in form.pages.errors %}
     <div class="alert alert-danger" role="alert">{{ error }}</div>
   {% endfor %}
-  {% if error_msg %}
-    <div class="alert alert-danger" role="alert">{{ error_msg }}</div>
-  {% endif %}
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+  {% endfor %}
   <div class="text-nowrap col-md-4 offset-md-4 card text-center">
     <div class="card-header"><h1 class="col-md-4 offset-md-4">Bot Information</h1></div>
     <div class="card-block">
@@ -27,9 +27,7 @@
           {{ form.insta_password(class_="form-control") }}
         </div>
         <div class="form-group">
-          <label class="form-check-label">
-            Pages
-          </label>
+          <label>Pages</label>
           {{ form.pages(class_="form-control") }}
         </div>
         <div class="form-group">
@@ -40,9 +38,9 @@
           <label>Follows Per Day</label>
           {{ form.follows_per_day(class_="form-control") }}
         </div>
-         <div class="form-group">
+         <div class="form-check">
           <label>Make</label>
-          {{ form.follows_per_day(class_="form-control") }}
+          {{ form.make(class_="form-control") }}
         </div>
       <input type="submit" value="Sign In" class="btn btn-dark">
     </form>

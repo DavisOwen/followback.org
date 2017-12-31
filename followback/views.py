@@ -1,12 +1,25 @@
 from followback import app, db, lm, celery
 from flask import render_template, flash, redirect, g, session, url_for, request
 from flask_login import login_user, current_user, login_required, logout_user 
-from flask_user import roles_required
-from .forms import LoginForm, RegisterForm, EditForm, BotForm, CheckpointForm
-from .models import User, Role, InstaUser
+from .forms import LoginForm, RegisterForm, BotForm, CheckpointForm
+from .models import User, InstaUser
 from datetime import datetime
 from instabot import Bot
+from functools import wraps
 import requests.utils
+
+def login_required(role="ANY"):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_view(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return lm.unauthorized()
+            urole = current_user.get_role()
+            if role == "Customer" and (urole != role):
+                return redirect(url_for('purchase',username=current_user.username))
+            return fn(*args,**kwargs)
+        return decorated_view
+    return wrapper
 
 @app.route('/')
 @app.route('/index')
@@ -20,7 +33,7 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
        user = User(username=form.username.data,password=form.password.data) 
-       user.roles.append(Role(name='Customer'))
+       user.role = "Customer"
        db.session.add(user)
        db.session.commit()
        return redirect(url_for('login'))
@@ -57,20 +70,32 @@ def before_request():
         db.session.add(g.user)
         db.session.commit()
 
+@app.route('/purchase')
+def purchase():
+    return render_template('purchase.html')
+
 @app.route('/<username>/bot_status')
-@login_required
+@login_required()
 def all_bot_status(username):
     return render_template('all_bot_status.html')
 
 @app.route('/<username>/<bot_id>/bot_status',methods=['GET','POST'])
-@login_required
+@login_required()
 def bot_status(username,bot_id):
-    status = instabot.AsyncResult(bot_id)
+    insta_user = InstaUser.query.filter_by(bot_id=bot_id).first()
     if request.method=='POST':
-        celery.control.revoke(bot_id, terminate=True)    
+        celery.control.revoke(bot_id, terminate=True, signal='SIGINT')    
+        insta_user.state = "STOPPED"
+        db.session.add(insta_user)
+        db.session.commit()
+    #if insta_user.state != "STOPPED":
+    status = instabot.AsyncResult(bot_id)
+    #else:
+    #    status = None
     return render_template('bot_status.html',
                             status=status,
-                            bot_id=bot_id)
+                            bot_id=bot_id,
+                            insta_user=insta_user)
 
 @celery.task(bind=True)
 def instabot(self,**kwargs):
@@ -78,28 +103,25 @@ def instabot(self,**kwargs):
     cookies = kwargs.get('cookies')
     headers = kwargs.get('headers')
     bot = Bot(args)
+    bot.set_up()
     bot.login_poster(cookies,headers)
     status = bot.login_getter()
     if not status:
-        self.update_state(state="FAILED",
-                            meta={"likes":0,
-                                "follows":0,
-                                "start_time":0,
-                                "end_time":0})
-        return
+        result = dict()
+        return result
     start_time = datetime.utcnow()
     self.update_state(state="PROGRESS",
-                                    meta={"likes":0,
-                                        "follows":0,
-                                        "start_time":start_time,
-                                        "end_time":0})
-    bot.loop(self,start_time)
+                        meta={"likes":0,
+                            "follows":0,
+                            "start_time":start_time,
+                            "end_time":0})
+    result = bot.loop(self,start_time)
+    return result
 
 @app.route('/<username>/checkpoint',methods=['GET','POST'])
-@roles_required('Customer')
+@login_required(role='Customer')
 def checkpoint(username):
     form = CheckpointForm()
-    error_msg = str()
     response = session['response']
     checkpoint_msg = 'Security code sent to email \
                         %s associated with this instagram account'\
@@ -110,41 +132,64 @@ def checkpoint(username):
         headers = session['headers']
         args['password'] = form.password.data 
         bot = Bot(args)
-        (status,req_session) = bot.handle_checkpoint_poster(form.code.data,cookies,headers,response)
+        (status,req_session) = bot.handle_checkpoint_poster(form.code.data,
+                                                            cookies,headers,
+                                                            response)
         if status == 0:
             cookies = requests.utils.dict_from_cookiejar(req_session.cookies)
             headers = req_session.headers
             headers = dict(headers)
             kwargs = {'args':args,'cookies':cookies,'headers':headers}
+            if session['new_user']:
+                insta_user = InstaUser(username=args['username'],pk=session['pk'])
+                g.user.insta_users.append(insta_user)
+                db.session.add(g.user)
+                db.session.commit()
+            else:
+                insta_user = InstaUser.query.filter_by(username=args['username']).first()
+                if insta_user is None:
+                   insta_user = InstaUser.query.filter_by(pk=session['pk']).first()
+                   insta_user.username=args['username']
+                   db.session.add(insta_user)
+                   db.session.commit()
             bot_instance = instabot.delay(**kwargs)
             insta_user = InstaUser.query.filter_by(username=args['username']).first()
             insta_user.bot_id = bot_instance.id
+            insta_user.state = "RUNNING"
+            insta_user.likes = None
+            insta_user.follows = None
+            insta_user.start_time = None
+            insta_user.end_time = None
             db.session.add(insta_user)
             db.session.commit()
-            return redirect(url_for('bot_status',username=username,bot_id=bot_instance.id))
+            session['args'] = None
+            session['cookies'] = None
+            session['headers'] = None
+            session['response'] = None
+            session['new_user'] = None
+            session['pk'] = None
+            return redirect(url_for('bot_status',username=username,
+                                    bot_id=bot_instance.id))
         elif status == 1:
-            error_msg = 'Incorrect password, try again'
+            message = 'Incorrect password, try again'
+            form.password.errors.append(message)
             return render_template('checkpoint.html', 
                                     form=form, 
-                                    error_msg=error_msg,
                                     checkpoint_msg=checkpoint_msg)
         elif status == 3:
             message = 'Incorrect checkpoint code'
             form.code.errors.append(message)
             return render_template('checkpoint.html', 
                                     form=form, 
-                                    error_msg=error_msg,
                                     checkpoint_msg=checkpoint_msg)
     return render_template('checkpoint.html', 
                             form=form, 
-                            error_msg=error_msg,
                             checkpoint_msg=checkpoint_msg)
 
 @app.route('/<username>/start_bot',methods=['GET','POST'])
-@roles_required('Customer')
+@login_required(role='Customer')
 def start_bot(username):
     form = BotForm()
-    error_msg = str()
     if form.validate_on_submit():
         args = dict()
         args['username']=form.insta_username.data
@@ -158,11 +203,6 @@ def start_bot(username):
         args['pic_path']=None
         args['scrape_user']=None
         args['upload_file']=None
-        if form.new_user.data:
-            new_insta_user = InstaUser(username=form.insta_username.data)
-            g.user.insta_users.append(new_insta_user)
-            db.session.add(g.user)
-            db.session.commit()
         bot = Bot(args)
         (status,req_session,response) = bot.try_login_poster()
         cookies = requests.utils.dict_from_cookiejar(req_session.cookies)
@@ -170,9 +210,25 @@ def start_bot(username):
         headers = dict(headers)
         if status == 0:
             kwargs = {'args':args,'cookies':cookies,'headers':headers}
+            if form.new_user.data:
+                insta_user = InstaUser(username=form.insta_username.data,pk=form.pk.data)
+                g.user.insta_users.append(insta_user)
+                db.session.add(g.user)
+                db.session.commit()
+            else:
+                insta_user = InstaUser.query.filter_by(username=args['username']).first()
+                if insta_user is None:
+                   insta_user = InstaUser.query.filter_by(pk=form.pk.data).first()
+                   insta_user.username=form.insta_username.data
+                   db.session.add(insta_user)
+                   db.session.commit()
             bot_instance = instabot.delay(**kwargs)
-            insta_user = InstaUser.query.filter_by(username=args['username']).first()
             insta_user.bot_id = bot_instance.id
+            insta_user.state = "RUNNING"
+            insta_user.likes = None
+            insta_user.follows = None
+            insta_user.start_time = None
+            insta_user.end_time = None
             db.session.add(insta_user)
             db.session.commit()
             return redirect(url_for('bot_status',username=username,bot_id=bot_instance.id))
@@ -181,23 +237,24 @@ def start_bot(username):
             form.insta_username.errors.append(message)
             return render_template('start_bot.html',
                                     form=form,
-                                    error_msg=error_msg)
+                                    )
         elif status == 2:
             args['password'] = ''
             session['args'] = args
             session['cookies'] = cookies
             session['headers'] = headers
             session['response'] = response
+            session['new_user'] = form.new_user.data
+            session['pk'] = form.pk.data
             return redirect(url_for('checkpoint',
                                     username=username))
         elif status == 4:
-            error_msg = 'Unknown Poster Login Error'
+            flash('Unknown Poster Login Error')
             return render_template('start_bot.html',
-                                    form=form,
-                                    error_msg=error_msg)
+                                    form=form
+                                    )
     return render_template('start_bot.html',
-                            form = form,
-                            error_msg=error_msg
+                            form = form
                             )
 
 @app.errorhandler(404)

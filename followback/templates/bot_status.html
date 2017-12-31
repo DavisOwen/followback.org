@@ -2,15 +2,22 @@
 
 {% block content %}
   <div>Bot Status</div>
-  <div>{{ status.state }}</div>
-  {% if status.info %}
-    <div>{{ status.info.get('likes') }}</div>
-    <div>{{ status.info.get('follows') }}</div>
-    <div>{{ status.info.get('start_time') }}</div>
-    <div>{{ status.info.get('end_time') }}</div>
-  {% endif %}
-    <form action="{{ url_for('bot_status',username=g.user.username,bot_id=bot_id) }}" method="post">
-      <input type="submit" value="Stop Bot">
-    </form>
+    <div>{{ status.state }}</div>
+    {% if status.state == "PROGRESS" %}
+      <div>{{ status.info.get('likes','N/A') }}</div>
+      <div>{{ status.info.get('follows','N/A') }}</div>
+      <div>{{ status.info.get('start_time','N/A') }}</div>
+      <div>{{ status.info.get('end_time','N/A') }}</div>
+    {% elif status.state == "SUCCESS" %}
+      <div>{{ status.result.get('state','N/A') }}</div>
+      <div>{{ status.result.get('likes','N/A') }}</div>
+      <div>{{ status.result.get('follows','N/A') }}</div>
+      <div>{{ status.result.get('start_time','N/A') }}</div>
+      <div>{{ status.result.get('end_time','N/A') }}</div>
+    {% endif %}
+    {% if status.state == "PROGRESS" %}
+      <form action="{{ url_for('bot_status',username=g.user.username,bot_id=bot_id) }}" method="post">
+        <input type="submit" value="Stop Bot">
+      </form>
+    {% endif %}
 {% endblock %}
-

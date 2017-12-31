@@ -275,10 +275,6 @@ class Bot():
                         self.upload()
             except Exception as e:
                 traceback.print_exc()
-                self.user.likes = self.likes
-                self.user.follows = self.follows
-                self.user.start_time = start_time
-                self.user.end_time = datetime.datetime.utcnow()
                 results = dict({"state":"STOPPED","likes":self.likes,
                                 "follows":self.follows,"start_time":start_time,
                                 "end_time":datetime.datetime.utcnow()})

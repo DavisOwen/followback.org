@@ -82,20 +82,12 @@ def all_bot_status(username):
 @app.route('/<username>/<bot_id>/bot_status',methods=['GET','POST'])
 @login_required()
 def bot_status(username,bot_id):
-    insta_user = InstaUser.query.filter_by(bot_id=bot_id).first()
     if request.method=='POST':
         celery.control.revoke(bot_id, terminate=True, signal='SIGINT')    
-        insta_user.state = "STOPPED"
-        db.session.add(insta_user)
-        db.session.commit()
-    #if insta_user.state != "STOPPED":
     status = instabot.AsyncResult(bot_id)
-    #else:
-    #    status = None
     return render_template('bot_status.html',
                             status=status,
-                            bot_id=bot_id,
-                            insta_user=insta_user)
+                            )
 
 @celery.task(bind=True)
 def instabot(self,**kwargs):
@@ -153,13 +145,7 @@ def checkpoint(username):
                    db.session.add(insta_user)
                    db.session.commit()
             bot_instance = instabot.delay(**kwargs)
-            insta_user = InstaUser.query.filter_by(username=args['username']).first()
             insta_user.bot_id = bot_instance.id
-            insta_user.state = "RUNNING"
-            insta_user.likes = None
-            insta_user.follows = None
-            insta_user.start_time = None
-            insta_user.end_time = None
             db.session.add(insta_user)
             db.session.commit()
             session['args'] = None
@@ -224,11 +210,6 @@ def start_bot(username):
                    db.session.commit()
             bot_instance = instabot.delay(**kwargs)
             insta_user.bot_id = bot_instance.id
-            insta_user.state = "RUNNING"
-            insta_user.likes = None
-            insta_user.follows = None
-            insta_user.start_time = None
-            insta_user.end_time = None
             db.session.add(insta_user)
             db.session.commit()
             return redirect(url_for('bot_status',username=username,bot_id=bot_instance.id))

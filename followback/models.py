@@ -1,8 +1,9 @@
 from followback import db
+from sqlalchemy.dialects.mysql import INTEGER
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.BigInteger(), primary_key=True)
+    id = db.Column(INTEGER(unsigned=True), primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(120), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -39,35 +40,30 @@ class User(db.Model):
 
 class Followed(db.Model):
     __tablename__ = 'followed'
-    id = db.Column(db.BigInteger(),primary_key=True)
-    insta_user_id = db.Column(db.BigInteger(), db.ForeignKey('insta_users.id', ondelete='CASCADE'))
+    id = db.Column(INTEGER(unsigned=True),primary_key=True)
+    insta_user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('insta_users.id', ondelete='CASCADE'))
     pk = db.Column(db.String(120))
 
 class MaxID(db.Model):
     __tablename__ = 'max_id'
-    id = db.Column(db.BigInteger(), primary_key=True)
-    insta_user_id = db.Column(db.BigInteger(), db.ForeignKey('insta_users.id', ondelete='CASCADE'))
+    id = db.Column(INTEGER(unsigned=True), primary_key=True)
+    insta_user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('insta_users.id', ondelete='CASCADE'))
     page = db.Column(db.String(120))
     max_id = db.Column(db.String(120))
 
 class Whitelist(db.Model):
     __tablename__ = 'whitelists'
-    id = db.Column(db.BigInteger(),primary_key=True)
-    insta_user_id = db.Column(db.BigInteger(), db.ForeignKey('insta_users.id', ondelete='CASCADE'))
+    id = db.Column(INTEGER(unsigned=True),primary_key=True)
+    insta_user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('insta_users.id', ondelete='CASCADE'))
     pk = db.Column(db.String(120))
 
 class InstaUser(db.Model):
     __tablename__ = 'insta_users'
-    id = db.Column(db.BigInteger(),primary_key=True)
-    user_id = db.Column(db.BigInteger(), db.ForeignKey('users.id', ondelete='CASCADE'))
+    id = db.Column(INTEGER(unsigned=True),primary_key=True)
+    user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('users.id', ondelete='CASCADE'))
     username = db.Column(db.String(120), index=True, unique=True)
     pk = db.Column(db.String(120), index=True, unique=True)
     followed = db.relationship('Followed')
     max_id = db.relationship('MaxID')
     whitelist = db.relationship('Whitelist')
     bot_id = db.Column(db.String(120), index=True, unique=True)
-    state = db.Column(db.String(120))
-    likes = db.Column(db.BigInteger()) 
-    follows = db.Column(db.BigInteger()) 
-    start_time = db.Column(db.DateTime())
-    end_time = db.Column(db.DateTime())

@@ -30,7 +30,8 @@
       <a class="navbar-brand btn" href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static',filename='img/fb_and_text_no_background_resize.png') }}"></a>
         {% if g.user.is_authenticated %}
           <ul class="navbar-nav mr-auto">
-            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('dashboard',username=g.user.username) }}" role="button">Dashboard </a></li>
+            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('dashboard',username=g.user.username) }}" role="button">Start a Bot</a></li>
+            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('all_bot_status',username=g.user.username) }}" role="button">Bot Status</a></li>
             {% if g.user.role != "Customer" %}
               <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('purchase',username=g.user.username) }}" role="button">Purchase</a></li>
             {% endif %}
@@ -47,12 +48,10 @@
           <ul>
         {% endif %}
     </nav>
-    {% for category, message in get_flashed_messages(with_categories=true) %}
-      <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
-    {% endfor %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     {% block content %}{% endblock %}
   </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
 </html>

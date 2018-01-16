@@ -10,11 +10,18 @@
   {% for error in form.confirm_password.errors %}
     <div class="alert alert-danger">{{ error }}</div>
   {% endfor %}
+  {% for error in form.email.errors %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endfor %}
   <div class="text-nowrap col-md-4 offset-md-4 card text-center">
     <div class="card-header"><h1 class="col-md-4 offset-md-4">Register</h1></div>
     <div class="card-block">
     <form action="" method="post" name="register" class="col-md-4 offset-md-4">
         {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>Email*</label>
+            {{ form.email(class_="form-control") }}
+        </div>
         <div class="form-group">
           <label>Username*</label>
             {{ form.username(class_="form-control") }}

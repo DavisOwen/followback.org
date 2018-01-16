@@ -1,0 +1,837 @@
+global name 'logger' is not defined
+Traceback (most recent call last):
+  File "/home/sowen/followback/followback/instabot/davisbot.py", line 257, in loop
+    success = self.scrape_users()
+  File "/home/sowen/followback/followback/instabot/davisbot.py", line 327, in scrape_users
+    logger.info('Scraping from %s' % (page))
+NameError: global name 'logger' is not defined
+
+Scraping from drugrehabcenters
+Liked ballarat_lactation_consultant's media
+Followed 5588653923
+Liked herrohkitteh's media
+Followed 5629844066
+Liked housemd177's media
+Liked pauljgormley2017's media
+Followed 5748151250
+Liked m0rgasmmm's media
+Followed 1155705149
+Liked snazzy_jazzy89's media
+Liked movieshowdown's media
+Followed 177070510
+Liked _iantee_'s media
+Followed 14789906
+Liked khawaiian12's media
+Could not get socalyhost9's feed. Trying next user
+Liked jackconmanmusic's media
+Followed 5412466199
+Liked dirce_nagatani's media
+Followed 1096776280
+Liked selfcare360's media
+Liked tony.kimber's media
+Followed 1812934652
+Liked manyviral's media
+Followed 4646430514
+Liked t12's media
+Liked marcmurphy34's media
+Followed 488037704
+Liked removebeforeflight44's media
+Bot stopped by user
+Scraping from drugrehabcenters
+Liked j_beckett273's media
+'bool' object has no attribute 'status_code'
+Traceback (most recent call last):
+  File "/home/sowen/followback/followback/InstagramBot/InstagramBot.py", line 279, in loop
+    self.follow()
+  File "/home/sowen/followback/followback/InstagramBot/InstagramBot.py", line 398, in follow
+    if req.status_code == 200:
+AttributeError: 'bool' object has no attribute 'status_code'
+
+Scraping from drugrehabcenters
+Liked narcotica_anonima's media
+Followed 4958974034
+Liked lacorona.delcielogt's media
+Followed 2273024567
+Liked sarahperla1's media
+Liked bobbyjohn25's media
+Followed 224814347
+Could not get merrimandee1972's feed. Trying next user
+Liked islandboyjvs's media
+Followed 4179323692
+Liked grossetendance's media
+Could not get rockin_recovery's feed. Trying next user
+Liked xangam99's media
+Followed 3704603135
+Liked unity_place_'s media
+Followed 1182789814
+Could not get mummyofabeauty's feed. Trying next user
+Liked querodescontopi's media
+Liked ificriedglitter's media
+Followed 3426655747
+Liked marcos1maia1's media
+Followed 5663376586
+Liked vegas.dude's media
+Liked deborahgeoffroy's media
+Followed 436265799
+Liked dickymarie_thuzz_woondecoratie's media
+Followed 5663393138
+Liked de.dumperie's media
+Could not get yogineveryday's feed. Trying next user
+Liked sahilv7's media
+Followed 324809616
+Liked thisisnotsocial's media
+Followed 5529185343
+Liked firedazed's media
+Liked wp687's media
+Followed 406957815
+Liked unbarrecovery's media
+Followed 1262677969
+Liked awakeningsbythesea's media
+Liked carol_edu's media
+Followed 4862226028
+Could not get jenniejj5776's feed. Trying next user
+Liked nearbeereview's media
+Followed 4694546124
+Liked memoirsofacrazy's media
+Liked nodividekc's media
+Followed 3219511811
+Liked cozgrove__bukowski_'s media
+Followed 5594687451
+Liked slimmingworldsusanne's media
+Liked melissa_quenneville_'s media
+Followed 5653487326
+Could not get ave_lynn's feed. Trying next user
+Liked pearlymiemie's media
+Followed 1702450010
+Liked swim_2012_2016_2020's media
+Liked munchkinofoz's media
+Followed 5003318335
+Could not get adriannevalstyn's feed. Trying next user
+Liked hijacknow's media
+Followed 214769147
+Liked oreolusegun's media
+Followed 5622183923
+Liked conciergesobrietyservices's media
+Liked chancesmommy2017's media
+Followed 5421033426
+Liked pockitudes's media
+Followed 5608154267
+Liked manicryan's media
+Liked aarecoveryworks's media
+Followed 311729717
+Liked timelessphoto.ky's media
+Followed 5369746129
+Liked zoomgrannyzoom's media
+Liked pnw.dad's media
+Followed 5404025934
+Bot stopped by user
+Scraping from drugrehabcenters
+Liked theretreatng's media
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Follow request returned 400. Trying next user
+Probably banned
+Scraping from drugrehabcenters
+Liked theketocaveman's media
+Followed 4944027253
+Liked barnettr91's media
+Followed 4887528608
+Liked curator_of_strangethings's media
+Liked the_fameproject's media
+Followed 6101560053
+Liked asobermiracle's media
+Followed 1650121236
+Liked sobersistas's media
+Liked kategreenmassage's media
+Followed 5931924222
+Liked aspiretooyxe's media
+Followed 5816540902
+Liked cassandra_lynette_timms's media
+Liked knewtherapy's media
+Followed 5379773847
+Liked alicia_glentz's media
+Followed 3829744010
+Liked meming_is_free's media
+Liked terra_kay_chism's media
+Followed 5484109468
+Liked phoenix_relapse_prevention's media
+Followed 3510257225
+Liked jackthetripper93's media
+Liked kimberlymarlowe86's media
+Followed 261568739
+Liked thecelestinecollection's media
+Followed 3879095
+Liked sanctuarybyronbay's media
+Liked ray.carrejo.12's media
+Followed 370639508
+Liked aprilandrews15's media
+Followed 4146781672
+Liked carissa_nicole2017's media
+Could not get carrie.recovered's feed. Trying next user
+Liked hope_findersf's media
+Followed 5349054744
+Could not get angelika_kleib's feed. Trying next user
+Liked thecornersheffield's media
+Followed 3532635200
+Liked fight_for_your_recovery's media
+Liked ___kim___x's media
+Followed 5992017495
+Liked crea8tivegenius's media
+Follow request for thecelestinecollection returned 400. Trying next user
+Follow request for sanctuarybyronbay returned 400. Trying next user
+Follow request for ray.carrejo.12 returned 400. Trying next user
+Follow request for aprilandrews15 returned 400. Trying next user
+Follow request for carissa_nicole2017 returned 400. Trying next user
+Liked phillip_knight_poetry's media
+Follow request for carrie.recovered returned 400. Trying next user
+Follow request for hope_findersf returned 400. Trying next user
+Follow request for angelika_kleib returned 400. Trying next user
+Follow request for thecornersheffield returned 400. Trying next user
+Follow request for fight_for_your_recovery returned 400. Trying next user
+Follow request for ___kim___x returned 400. Trying next user
+Follow request for crea8tivegenius returned 400. Trying next user
+Follow request for phillip_knight_poetry returned 400. Trying next user
+Follow request for bobcat_forever returned 400. Trying next user
+Follow request for kelliejeannn returned 400. Trying next user
+Probably banned
+Scraping from drugrehabcenters
+Liked metanoiaguide's media
+Followed metanoiaguide
+Liked inrecovery2017's media
+Followed inrecovery2017
+Liked owenandjoni's media
+Liked eevee_and_friends's media
+Followed owenandjoni
+Liked rolvotus_se7en's media
+Followed eevee_and_friends
+Liked cdrob16's media
+Liked innerspace_coach's media
+Follow request for rolvotus_se7en returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for cdrob16 returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for innerspace_coach returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for avalon_malibu returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for priderecovery returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for akram_leo returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for reba6039 returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for mommy.to.two.and.an.angel returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Followed irishartdude
+Liked avalon_malibu's media
+Liked priderecovery's media
+Follow request for sonia_fitcoach_fitnurse returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for alliisonmariiie returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for heroes.horses.az returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for safehaven23 returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for vincentroyvalentine returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for devils_queen225 returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for bigbookclint returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for amandaleannelay returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for lcartdragon returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Follow request for ashamaroo returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Probably banned
+Scraping from premium.spinners
+'big_list'
+Traceback (most recent call last):
+  File "/home/sowen/followback/followback/InstagramBot/InstagramBot.py", line 257, in loop
+    success = self.scrape_users()
+  File "/home/sowen/followback/followback/InstagramBot/InstagramBot.py", line 338, in scrape_users
+    if self.user_followers['big_list']:
+KeyError: 'big_list'
+
+Scraping from drugrehabcenters
+Liked musclesandmascara1989's media
+Follow request for musclesandmascara1989 returned 400. Trying next user
+{"message": "\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0435 \u0440\u0430\u0437 \u043f\u043e\u0437\u0436\u0435.", "status": "fail"}
+Liked revo617's media
+Bot stopped by user
+Scraping from drugrehabcenters
+Liked elizabeth.walsh55's media
+Followed elizabeth.walsh55
+Liked aakriti_insideme's media
+Error 111 connecting to localhost:6379. Connection refused.
+Traceback (most recent call last):
+  File "/home/sowen/followback/followback/InstagramBot/InstagramBot.py", line 274, in loop
+    "end_time":0})
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/celery/app/task.py", line 895, in update_state
+    self.backend.store_result(task_id, meta, state)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/celery/backends/base.py", line 309, in store_result
+    request=request, **kwargs)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/celery/backends/base.py", line 652, in _store_result
+    self.set(self.get_key_for_task(task_id), self.encode(meta))
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/celery/backends/redis.py", line 213, in set
+    return self.ensure(self._set, (key, value), **retry_policy)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/celery/backends/redis.py", line 203, in ensure
+    **retry_policy)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/kombu/utils/functional.py", line 333, in retry_over_time
+    return fun(*args, **kwargs)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/celery/backends/redis.py", line 222, in _set
+    pipe.execute()
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/redis/client.py", line 2894, in execute
+    return execute(conn, stack, raise_on_error)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/redis/client.py", line 2749, in _execute_transaction
+    connection.send_packed_command(all_cmds)
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/redis/connection.py", line 585, in send_packed_command
+    self.connect()
+  File "/home/sowen/followback/flask/lib/python2.7/site-packages/redis/connection.py", line 489, in connect
+    raise ConnectionError(self._error_message(e))
+ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+
+Scraping from drugrehabcenters
+Bot stopped by user
+Scraping from drugrehabcenters
+Bot stopped by user
+Scraping from drugrehabcenters
+Liked herrohkitteh's media
+Followed herrohkitteh
+Liked housemd177's media
+Followed housemd177
+Liked pauljgormley2018's media
+Liked m0rgasmmm's media
+Followed pauljgormley2018
+Liked snazzy_jazzy89's media
+Followed m0rgasmmm
+Liked movieshowdown's media
+Liked _iantee_'s media
+Followed snazzy_jazzy89
+Liked khawaiian12's media
+Followed movieshowdown
+Could not get socalyhost9's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked jackconmanmusic's media
+Followed _iantee_
+Liked dirce_nagatani's media
+Followed khawaiian12
+Liked selfcare360's media
+Liked tony.kimber's media
+Followed socalyhost9
+Liked manyviral's media
+Followed jackconmanmusic
+Liked t12's media
+Liked marcmurphy34's media
+Followed dirce_nagatani
+Liked removebeforeflight44's media
+Followed selfcare360
+Could not get chicagoteetotales's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked elodiestorelarissa's media
+Followed tony.kimber
+Liked lettersforkitten's media
+Followed manyviral
+Liked bobbi3397's media
+Liked giftsofrecovery's media
+Followed t12
+Could not get donrico_23's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed marcmurphy34
+Liked sdwrarebreed's media
+Could not get nelsonkodi's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed removebeforeflight44
+Could not get bangragdana's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed chicagoteetotales
+Could not get bhack27's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked _h_a_z_e_y_'s media
+Followed elodiestorelarissa
+Liked ttosbt.me's media
+Followed lettersforkitten
+Could not get davidjrfmb's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked alexamae040612's media
+Followed bobbi3397
+Liked tiffeeree's media
+Followed giftsofrecovery
+Liked saywordmusic's media
+Liked sandamaul's media
+Followed donrico_23
+Liked mtmadeadelinemarie's media
+Followed sdwrarebreed
+Liked kaila.mae's media
+Could not get a_hutchinson_71's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed nelsonkodi
+Liked drugfreecluboau's media
+Followed bangragdana
+Liked taymiller24's media
+Liked 155hotelsaopaulo's media
+Followed bhack27
+Liked thatjacobkidd's media
+Followed _h_a_z_e_y_
+Could not get luke.travel's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked equatorbotanical.co's media
+Followed ttosbt.me
+Liked story.yoga.inc's media
+Followed davidjrfmb
+Liked 1000badpoems's media
+Liked molly_ollz's media
+Followed alexamae040612
+Liked iamsheelaah's media
+Followed tiffeeree
+Liked meujardimemmim's media
+Liked garylynch2675's media
+Followed saywordmusic
+Liked amestiggr's media
+Followed sandamaul
+Liked ar2istformerlyknownasmillaspa's media
+Liked anxietygone's media
+Followed mtmadeadelinemarie
+Liked alinerram's media
+Followed kaila.mae
+Liked melissarezza's media
+Liked genius_crea8ing's media
+Followed a_hutchinson_71
+Liked rehabjimmy's media
+Followed drugfreecluboau
+Liked nicolepjohnson's media
+Liked rhamstagram's media
+Followed taymiller24
+Could not get b0xmn's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed 155hotelsaopaulo
+Liked beyondthebooze's media
+Liked jimmy_seeking's media
+Followed thatjacobkidd
+Liked janussolutions's media
+Followed luke.travel
+Liked innerchildren's media
+Liked azeliav_xoh31's media
+Followed equatorbotanical.co
+Liked wellbeingcenterme's media
+Followed story.yoga.inc
+Liked astevenson088's media
+Liked tuyapearl's media
+Followed 1000badpoems
+Liked nickswife05's media
+Followed molly_ollz
+Liked tessan_1978's media
+Liked tvfluff's media
+Followed iamsheelaah
+Liked dewald.venter's media
+Followed meujardimemmim
+Liked hafizazriacik_'s media
+Liked aristotelesphotostyle's media
+Followed garylynch2675
+Liked youngboywonder1's media
+Followed amestiggr
+Liked lifeaddictz's media
+Liked constandia.diomedous's media
+Followed ar2istformerlyknownasmillaspa
+Liked kewlcreole72's media
+Followed anxietygone
+Liked 14metoo's media
+Liked hosteldonavio's media
+Followed alinerram
+Liked christy.seitter's media
+Followed melissarezza
+Liked evkmediavids's media
+Liked inteutanminaggmjolk's media
+Followed genius_crea8ing
+Liked andriansyah53's media
+Followed rehabjimmy
+Liked addictionschool's media
+Liked friduliini's media
+Followed nicolepjohnson
+Liked big_a_tron's media
+Followed rhamstagram
+Liked harmonizemoments's media
+Could not get rebeccaknieper's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed b0xmn
+Liked darcie221's media
+Followed beyondthebooze
+Liked words_of_wisdom_breaking_chain's media
+Liked swehla's media
+Followed jimmy_seeking
+Liked plugdaddy_kegan's media
+Followed janussolutions
+Could not get obiwancolby's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked lidvergilio's media
+Followed innerchildren
+Liked __danidee's media
+Followed azeliav_xoh31
+Liked michaelstull_'s media
+Liked obiathechef's media
+Followed wellbeingcenterme
+Liked mayafan6565's media
+Followed astevenson088
+Could not get sober.leaf's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Could not get workaholicforex's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed tuyapearl
+Could not get jordanhmills's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed nickswife05
+Liked tiffanymhanson's media
+Liked nicole_ann44's media
+Followed tessan_1978
+Liked mrsodin13's media
+Followed tvfluff
+Liked freshstartcommunity's media
+Liked kinzie4444's media
+Followed dewald.venter
+Liked helixccs's media
+Followed hafizazriacik_
+Liked dowens420's media
+Liked hotelmontealegrerj's media
+Followed aristotelesphotostyle
+Liked parsley.is.life's media
+Followed youngboywonder1
+Liked cargninpedras's media
+Liked pokerpaparazzi's media
+Followed lifeaddictz
+Could not get ma2lync's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed constandia.diomedous
+Liked wehoangel's media
+Liked sobercollege's media
+Followed kewlcreole72
+Liked dana.prangerhernandez's media
+Followed 14metoo
+Liked incitetalks's media
+Liked boetherapy's media
+Followed hosteldonavio
+Liked thefallenangelgallery's media
+Followed christy.seitter
+Liked angelscbd's media
+Followed evkmediavids
+Liked dopeboyzz6969's media
+Liked tashstrange2017's media
+Followed inteutanminaggmjolk
+Liked theridge_recovery's media
+Followed andriansyah53
+Liked ts_dtplague's media
+Liked laineyfrancisrose's media
+Followed addictionschool
+Liked luxuries4life's media
+Followed friduliini
+Liked mimiveloso1990's media
+Could not get hope.sarah.7503's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed big_a_tron
+Liked jalesaamarin's media
+Followed harmonizemoments
+Liked barrywertheimer's media
+Liked obhessays's media
+Followed rebeccaknieper
+Liked andrewanthony15's media
+Followed darcie221
+Liked eckobelle's media
+Liked timfoss126's media
+Followed words_of_wisdom_breaking_chain
+Liked craigyas's media
+Followed swehla
+Liked jd_offroading's media
+Liked allgoodvegan's media
+Followed plugdaddy_kegan
+Liked beat.mental.illness.stigma's media
+Followed obiwancolby
+Liked sandale_personalizados's media
+Liked lmsadler21's media
+Followed lidvergilio
+Could not get stonedscorpioxo's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed __danidee
+Liked lizerb42069's media
+Liked thecartertreatmentcenter's media
+Followed michaelstull_
+Liked eternitee's media
+Followed obiathechef
+Liked pyroprincess427's media
+Could not get alverapplepie's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed mayafan6565
+Liked gasanctuaries's media
+Followed sober.leaf
+Could not get crisvelez868's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked marioeneas's media
+Followed workaholicforex
+Liked shenzi85's media
+Followed jordanhmills
+Could not get samahmed7703's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked goldilocks1993's media
+Followed tiffanymhanson
+Could not get mish.gypsy.dee's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed nicole_ann44
+Liked lisa_wells_the_angel_writer's media
+Liked epihealing's media
+Followed mrsodin13
+Liked mlm1523's media
+Followed freshstartcommunity
+Liked amandal_jones's media
+Liked 5thdimdreamz's media
+Followed kinzie4444
+Liked nrhythmofficial's media
+Followed helixccs
+Liked layceeiracheta89's media
+Liked hyow23's media
+Followed dowens420
+Could not get gerritziemerfanpage's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed hotelmontealegrerj
+Liked gregorygriffin4443's media
+Liked centropticosusanawirz's media
+Followed parsley.is.life
+Liked dereksmiley29's media
+Followed cargninpedras
+Liked rakebrajukasem's media
+Liked moonerboi's media
+Followed pokerpaparazzi
+Liked surfliftsurf_repeat's media
+Followed ma2lync
+Liked nuttbytreecare's media
+Liked stepdenver's media
+Followed wehoangel
+Liked sugarxnella's media
+Followed sobercollege
+Liked happy_in_recovery's media
+Liked law_and_order7108's media
+Followed dana.prangerhernandez
+Liked annaspectra's media
+Followed incitetalks
+Liked tylerjiles1's media
+Liked sherecovery's media
+Followed boetherapy
+Liked willamettefamily's media
+Followed thefallenangelgallery
+Liked edgarjnr's media
+Liked zipariduda's media
+Followed angelscbd
+Liked breathofnewlife01's media
+Followed dopeboyzz6969
+Could not get thaiuchiha58's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked vaanhenkka's media
+Followed tashstrange2017
+Liked samir_chaturvedi's media
+Followed theridge_recovery
+Liked mrjamesthomassr's media
+Liked dealibi_fashionstore's media
+Followed ts_dtplague
+Liked ladybabadook's media
+Followed laineyfrancisrose
+Liked jamieelynnkiner's media
+Liked destructive4's media
+Followed luxuries4life
+Liked renataaguiarnoivas's media
+Followed mimiveloso1990
+Could not get mougelada's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked dhiniedamita's media
+Followed hope.sarah.7503
+Liked pixxilovee's media
+Followed jalesaamarin
+Liked throughitall_apparel's media
+Liked j_beckett273's media
+Followed barrywertheimer
+Liked herrohkitteh's media
+Followed obhessays
+Liked housemd177's media
+Liked pauljgormley2018's media
+Followed andrewanthony15
+Liked m0rgasmmm's media
+Followed eckobelle
+Liked snazzy_jazzy89's media
+Liked movieshowdown's media
+Followed timfoss126
+Liked _iantee_'s media
+Followed craigyas
+Liked khawaiian12's media
+Could not get socalyhost9's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed jd_offroading
+Liked jackconmanmusic's media
+Followed mr.perfumesstore
+Liked dirce_nagatani's media
+Liked selfcare360's media
+Followed allgoodvegan
+Liked tony.kimber's media
+Followed beat.mental.illness.stigma
+Liked manyviral's media
+Liked t12's media
+Followed sandale_personalizados
+Liked marcmurphy34's media
+Followed lmsadler21
+Liked removebeforeflight44's media
+Liked chicagoteetotales's media
+Followed stonedscorpioxo
+Liked elodiestorelarissa's media
+Followed lizerb42069
+Liked lettersforkitten's media
+Liked bobbi3397's media
+Followed thecartertreatmentcenter
+Liked giftsofrecovery's media
+Followed eternitee
+Could not get donrico_23's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Liked sdwrarebreed's media
+Followed pyroprincess427
+Could not get nelsonkodi's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed alverapplepie
+Could not get bangragdana's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Could not get bhack27's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed gasanctuaries
+Liked _h_a_z_e_y_'s media
+Followed crisvelez868
+Liked ttosbt.me's media
+Liked davidjrfmb's media
+Followed marioeneas
+Liked alexamae040612's media
+Followed shenzi85
+Liked tiffeeree's media
+Liked saywordmusic's media
+Followed samahmed7703
+Liked sandamaul's media
+Followed goldilocks1993
+Liked mtmadeadelinemarie's media
+Liked kaila.mae's media
+Followed mish.gypsy.dee
+Liked a_hutchinson_71's media
+Followed lisa_wells_the_angel_writer
+Liked drugfreecluboau's media
+Liked taymiller24's media
+Followed epihealing
+Liked 155hotelsaopaulo's media
+Followed mlm1523
+Liked thatjacobkidd's media
+Could not get luke.travel's feed. Trying next user
+{"message": "Not authorized to view user", "status": "fail"}
+{u'status': u'fail', u'message': u'Not authorized to view user'}
+Followed amandal_jones
+Liked equatorbotanical.co's media
+Followed 5thdimdreamz
+Liked story.yoga.inc's media
+Liked 1000badpoems's media
+Followed nrhythmofficial
+Liked molly_ollz's media
+Followed layceeiracheta89
+Liked iamsheelaah's media
+Liked meujardimemmim's media
+Followed hyow23
+Liked garylynch2675's media
+Followed gerritziemerfanpage
+Liked amestiggr's media
+Liked ar2istformerlyknownasmillaspa's media
+Followed gregorygriffin4443
+Liked anxietygone's media
+Followed centropticosusanawirz
+Liked alinerram's media
+Liked melissarezza's media
+Followed dereksmiley29
+Liked genius_crea8ing's media
+Followed rakebrajukasem
+Liked rehabjimmy's media
+Liked nicolepjohnson's media
+Followed moonerboi
+Liked rhamstagram's media
+Followed surfliftsurf_repeat
+Liked b0xmn's media
+Liked beyondthebooze's media
+Followed nuttbytreecare
+Liked jimmy_seeking's media
+Followed stepdenver
+Liked janussolutions's media
+Liked innerchildren's media
+Followed sugarxnella
+Liked azeliav_xoh31's media
+Followed happy_in_recovery
+Liked wellbeingcenterme's media
+Liked astevenson088's media
+Followed law_and_order7108
+Liked tuyapearl's media
+Followed annaspectra
+Liked nickswife05's media
+Liked tessan_1978's media
+Followed tylerjiles1
+Liked tvfluff's media
+Followed sherecovery
+Liked dewald.venter's media
+Liked hafizazriacik_'s media
+Followed willamettefamily
+Liked aristotelesphotostyle's media
+Followed edgarjnr
+Liked youngboywonder1's media
+Followed zipariduda
+Liked lifeaddictz's media
+Liked constandia.diomedous's media
+Followed breathofnewlife01
+Liked kewlcreole72's media
+Followed thaiuchiha58
+Liked 14metoo's media
+Liked hosteldonavio's media
+Followed vaanhenkka
+Liked christy.seitter's media
+Followed samir_chaturvedi
+Liked evkmediavids's media
+Liked inteutanminaggmjolk's media
+Followed mrjamesthomassr
+Liked andriansyah53's media
+Followed dealibi_fashionstore
+Liked addictionschool's media
+Liked friduliini's media
+Followed ladybabadook
+Liked big_a_tron's media
+Bot stopped by user

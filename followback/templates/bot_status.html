@@ -2,18 +2,29 @@
 
 {% block content %}
   <div>Bot Status</div>
-    <div>{{ status.state }}</div>
     {% if status.state == "PROGRESS" %}
-      <div>{{ status.info.get('likes','N/A') }}</div>
-      <div>{{ status.info.get('follows','N/A') }}</div>
-      <div>{{ status.info.get('start_time','N/A') }}</div>
-      <div>{{ status.info.get('end_time','N/A') }}</div>
+      {% if status.info.get('type','N/A') == "bot" %}
+        <div>Running</div>
+        <div>{{ status.info.get('likes','N/A') }}</div>
+        <div>{{ status.info.get('follows','N/A') }}</div>
+      {% elif status.info.get('type','N/A') == "unfollow" %}
+        <div>Running</div>
+        <div>{{ status.info.get('unfollows','N/A') }}</div>
+      {% endif %}
+      <div>{{ start_time }} </div>
     {% elif status.state == "SUCCESS" %}
       <div>{{ status.result.get('state','N/A') }}</div>
-      <div>{{ status.result.get('likes','N/A') }}</div>
-      <div>{{ status.result.get('follows','N/A') }}</div>
+      {% if status.result.get('type','N/A') == "bot" %}
+        <div>{{ status.result.get('likes','N/A') }}</div>
+        <div>{{ status.result.get('follows','N/A') }}</div>
+      {% elif status.result.get('type','N/A') == "unfollow" %}
+        <div>{{ status.result.get('unfollows','N/A') }}</div>
+      {% endif %}
       <div>{{ status.result.get('start_time','N/A') }}</div>
       <div>{{ status.result.get('end_time','N/A') }}</div>
+      <div>{{ status.result.get('run_time','N/A') }}</div>
+    {% elif status.state == "PENDING" %}
+      <div>Submitting...</div>
     {% endif %}
     {% if status.state == "PROGRESS" %}
       <form action="{{ url_for('bot_status',username=g.user.username,bot_id=bot_id) }}" method="post">

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div>Registered accounts</div>
+  {% if g.user.insta_users %}
+    {% for user in g.user.insta_users %}
+      {{ user.username }}
+        <a href="{{ url_for('start_bot',username=g.user.username, insta_user=user.username) }}" role="button">Start Bot</a>
+        <a href="{{ url_for('unfollowbot',username=g.user.username, insta_user=user.username) }}" role="button">Unfollow Bot</a>
+        <a href="{{ url_for('add_whitelist',username=g.user.username, insta_user=user.username) }}" role="button">Add Users to Whitelist</a>
+      {% if user.bot_id %}
+        <a href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">Bot status</a>
+      {% else %}
+        No bots started yet!
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    No accounts registered! 
+    <a href="{{ url_for('register_insta',username=g.user.username) }}">Register here</a>
+  {% endif %}
+{% endblock %}
+

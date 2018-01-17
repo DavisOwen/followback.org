@@ -3,7 +3,7 @@
 from getter import Getter
 from poster import Poster
 from followback import db
-from followback.models import InstaUser, Whitelist, Followed, MaxID
+from followback.models import User, InstaUser, Followed, MaxID
 from followback.views import celery_logger as logger
 import time
 import datetime
@@ -43,6 +43,20 @@ private api does not like very many requests per day, whereas the http requests 
 However, the http api does not allow one to scrape users from profiles.
 
 '''
+class NoPayment(Exception):
+    pass
+
+def check_payment(insta_user):
+    user = User.query.filter_by(insta_users=insta_user).first()
+    last_payment = user.paypal_transactions[-1].unix
+    from dateutil.relativedelta import relativedelta
+    stop_date = last_payment + relativedelta(months=+1)
+    stop_date += datetime.timedelta
+    if datetime.date.today() > stop_date:
+        user.role = "Customer"
+        db.session.add(user)
+        db.session.commit()
+        raise NoPayment
 
 class InstagramBot:
 
@@ -78,6 +92,7 @@ class InstagramBot:
         and the users whitelist
         '''
         self.user = self.get_user(self.username)
+        self.super_user = User.query.filter_by(insta_user=self.user).first()
         self.following = self.get_followed()
         self.max_id = self.get_max_id(self.pages)
         self.whitelist = self.get_whitelist(self.use_whitelist)
@@ -229,6 +244,7 @@ class InstagramBot:
                 # Waiting to begin unfollowing after loop
                 elif time_elapsed >= datetime.timedelta(hours=16):
                     start_time = datetime.datetime.utcnow()
+                    check_payment(self.user)
                     self.unfollow()
                 # Looping
                 else:

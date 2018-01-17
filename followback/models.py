@@ -37,6 +37,9 @@ class User(db.Model):
     def get_role(self):
         return self.role
 
+    def get_confirmed(self):
+        return self.confirmed
+
     def __repr__(self):
         return '<User %r>' % (self.username)
 
@@ -83,3 +86,4 @@ class PaypalTransaction(db.Model):
     payment_net = db.Column(db.Float)
     payment_status = db.Column(db.String(30))
     txn_id = db.Column(db.String(64))
+    subscr_id = db.Column(db.String(64))

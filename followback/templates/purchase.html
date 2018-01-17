@@ -17,7 +17,7 @@
       <input type="hidden" name="return" value="{{ url_for('success',username=g.user.username, _external=True) }}">
 			<input type="hidden" name="cancel_return" value="{{ url_for('purchase',username=g.user.username, _external=True) }}">
 			<input type="hidden" name="notify_url" value="{{ url_for('ipn',_external=True) }}">
-			<input type="submit" value="Subscribe" name="submit" title="PayPal - The safer, easier way to pay online!" class="btn btn-primary">
+			<input type="submit" value="Subscribe" name="submit" title="PayPal - The safer, easier way to pay online!" class="btn btn-danger">
 		</form>
 {% endblock %}
 

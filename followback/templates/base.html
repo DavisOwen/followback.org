@@ -26,25 +26,30 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-light lato">
+    <nav class="navbar navbar-light navbar-toggleable-md navbar-expand-md bg-light lato">
       <a class="navbar-brand btn" href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static',filename='img/fb_and_text_no_background_resize.png') }}"></a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
         {% if g.user.is_authenticated %}
           <ul class="navbar-nav mr-auto">
-            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('dashboard',username=g.user.username) }}" role="button">Dashboard </a></li>
+            <li><a class="nav-item nav-link text-dark" href="{{ url_for('dashboard',username=g.user.username) }}" role="button">Dashboard </a></li>
             {% if g.user.role != "Customer" %}
-              <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('purchase',username=g.user.username) }}" role="button">Purchase</a></li>
+              <li><a class="nav-item nav-link text-dark" href="{{ url_for('purchase',username=g.user.username) }}" role="button">Purchase</a></li>
             {% endif %}
           </ul>
           <ul class="navbar-nav">
-            <li><a class="nav-item nav-link text-white btn btn-danger" href="{{ url_for('logout') }}">Logout</a></li>
+            <li><a class="nav-item nav-link text-danger" href="{{ url_for('logout') }}">Logout</a></li>
           </ul>
         {% else %}
           <ul class="navbar-nav mr-auto">
-            <li><a class="nav-item nav-link text-white btn btn-dark" href="{{ url_for('register') }}" role="button">Register</a></li>
+            <li><a class="nav-item nav-link text-dark" href="{{ url_for('register') }}" role="button">Register</a></li>
           </ul>
           <ul class="navbar-nav">
-            <li><a class="nav-item nav-link text-white btn btn-danger" href="{{ url_for('login') }}">Login</a></li>
+            <li><a class="nav-item nav-link text-danger" href="{{ url_for('login') }}">Login</a></li>
           <ul>
+        </div>
         {% endif %}
     </nav>
     {% for category, message in get_flashed_messages(with_categories=true) %}

@@ -10,17 +10,18 @@ def async(f):
         thr.start()
     return wrapper
 
-def login_required(role="ANY"):
+def login_required(role="ANY",confirmed=True):
     def wrapper(fn):
         @wraps(fn)
         def decorated_view(*args, **kwargs):
             if not g.user.is_authenticated:
                 return lm.unauthorized()
             urole = g.user.get_role()
+            uconfirmed = g.user.get_confirmed()
             if role == "Customer" and (urole != role):
                 return redirect(url_for('purchase',username=g.user.username))
-            elif role == "Confirmed" and (urole != role):
-                return redirect(url_for('confirm_email',username=g.user.username))
+            elif confirmed and (uconfirmed != confirmed):
+                return redirect(url_for('resend_email',username=g.user.username))
             return fn(*args,**kwargs)
         return decorated_view
     return wrapper

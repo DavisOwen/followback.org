@@ -6,7 +6,7 @@ from .models import User, InstaUser, PaypalTransaction, Whitelist
 from .decorators import login_required
 from .token import generate_confirmation_token, confirm_token
 from .emails import  send_email
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from InstagramBot import InstagramBot, Getter
 from werkzeug.datastructures import ImmutableOrderedMultiDict
 import requests
@@ -23,7 +23,7 @@ def index():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data,email=form.email.data,confirmed=0) 
+        user = User(username=form.username.data,email=form.email.data,confirmed=False,role="User") 
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -39,8 +39,20 @@ def register():
                            title='Register',
                            form=form)
 
+@app.route('/<username>/resend_email',methods=['GET','POST'])
+@login_required(confirmed=False)
+def resend_email(username):
+    if request.method == "POST":
+        token = generate_confirmation_token(g.user.email)
+        confirm_url = url_for('confirm_email',token=token, _external=True)
+        html = render_template('activate.html',confirm_url=confirm_url)
+        subject = "Please confirm your email"
+        send_email(subject,app.config['ADMINS'][0],[g.user.email],html)
+        flash("Confirmation email resent", "success")
+    return render_template('resend_email.html')
+
 @app.route('/confirm/<token>')
-@login_required()
+@login_required(confirmed=False)
 def confirm_email(token):
     try:
         email = confirm_token(token)
@@ -80,9 +92,22 @@ def load_user(id):
 @app.before_request
 def before_request():
     g.user = current_user
+    if g.user.is_authenticated:
+        if g.user.paypal_transactions:
+            last_payment = g.user.paypal_transactions[-1].unix
+            from dateutil.relativedelta import relativedelta
+            stop_date = last_payment + relativedelta(months=+1)
+            stop_date += timedelta(days=1)
+            if date.today() > stop_date:
+                g.user.role="User"
+                db.session.add(g.user)
+                db.session.commit()
 
 @app.route('/ipn',methods=['POST'])
 def ipn():
+    class NotFullPayment(Exception):
+        pass
+
     filename = 'logs/paypal/%s.log' % (date.today())
     logger = logging.getLogger(__name__)
     handler = logging.handlers.RotatingFileHandler(filename,'a',1*1024*1024,10)
@@ -99,37 +124,44 @@ def ipn():
     r = requests.get(validate_url)
     if r.text == 'VERIFIED':
         try:
-            payer_email = request.form.get('payer_email')
-            unix = datetime.utcnow()
-            username = request.form.get('custom')
-            payment_date = request.form.get('payment_date')
-            last_name = request.form.get('last_name')
-            payment_gross = request.form.get('mc_gross')
-            payment_fee = request.form.get('mc_fee')
+            txn_type = request.form.get('txn_type','N/A')
+            payer_email = request.form.get('payer_email','N/A')
+            unix = date.today()
+            username = request.form.get('custom','N/A')
+            payment_date = request.form.get('payment_date','N/A')
+            last_name = request.form.get('last_name','N/A')
+            payment_gross = request.form.get('mc_gross',0)
+            payment_fee = request.form.get('mc_fee',0)
             payment_net = float(payment_gross) - float(payment_fee)
-            payment_status = request.form.get('payment_status')
-            txn_id = request.form.get('txn_id')
+            payment_status = request.form.get('payment_status','N/A')
+            txn_id = request.form.get('txn_id','N/A')
+            subscr_id = request.form.get('subscr_id','N/A')
+            user = User.query.filter_by(username=username).first()
+            if txn_type == 'subscr_payment':
+                if float(payment_gross) < 5:
+                    user.role = "User"
+                    raise NotFullPayment
             
-            payment = PaypalTransaction(payer_email=payer_email,
+                payment = PaypalTransaction(payer_email=payer_email,
                                         unix=unix,payment_date=payment_date,
                                         last_name=last_name,
                                         payment_gross=payment_gross,
                                         payment_fee=payment_fee,
                                         payment_net=payment_net,
                                         payment_status=payment_status,
-                                        txn_id=txn_id)
-            user = User.query.filter_by(username=username).first()
-            user.role = "Customer"
-            user.paypal_transactions.append(payment)
-            db.session.add(user)
-            db.session.commit()
+                                        txn_id=txn_id,
+                                        subscr_id = subscr_id)
+                user.role = "Customer"
+                user.paypal_transactions.append(payment)
+                db.session.add(user)
+                db.session.commit()
         except Exception as e:
             logger.warning(e)
     logger.info(values)
     return r.text
 
 @app.route('/<username>/purchase')
-@login_required(role="Confirmed")
+@login_required()
 def purchase(username):
     return render_template('purchase.html')
 

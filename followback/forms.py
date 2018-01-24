@@ -63,6 +63,142 @@ class RegisterInstaForm(FlaskForm):
             return False
         return True
 
+class ChangeUsernameForm(FlaskForm):
+    new_username = StringField('new_username',
+                                validators=[DataRequired()])
+    password = PasswordField('password',
+                            validators=[DataRequired()])
+
+    def __init__(self, user, *args, **kwargs):
+        super(ChangeUsernameForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+        new_user = User.query.filter_by(username=
+                                        self.new_username.data).first()
+        if new_user is not None:
+            self.new_username.errors.append('Username %s already in use. \
+                                            Please choose another one' % (self.new_username.data))
+            return False
+        if not self.user.check_password(self.password.data):
+            self.password.errors.append('Invalid password')
+            return False
+        return True
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('old_password',
+                                validators=[DataRequired()])
+    new_password = PasswordField('new_password',
+                            validators=[DataRequired(),
+                            EqualTo('new_password_confirm', 
+                            message='Passwords must match')])
+    new_password_confirm = PasswordField('new_password_confirm',
+                            validators=[DataRequired()])
+
+    def __init__(self, user, *args, **kwargs):
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+        if not self.user.check_password(self.old_password.data):
+            self.password.errors.append('Invalid password')
+            return False
+        pw = self.new_password.data
+        if len(pw) < 6:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        elif len(set(string.ascii_lowercase).intersection(pw)) == 0:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        elif len(set(string.ascii_uppercase).intersection(pw)) == 0:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        elif len(set(string.digits).intersection(pw)) == 0:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        return True
+
+class ResetPasswordForm(FlaskForm):
+    new_password = PasswordField('new_password',
+                            validators=[DataRequired(),
+                            EqualTo('new_password_confirm', 
+                            message='Passwords must match')])
+    new_password_confirm = PasswordField('new_password_confirm',
+                            validators=[DataRequired()])
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+        pw = self.new_password.data
+        if len(pw) < 6:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        elif len(set(string.ascii_lowercase).intersection(pw)) == 0:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        elif len(set(string.ascii_uppercase).intersection(pw)) == 0:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        elif len(set(string.digits).intersection(pw)) == 0:
+            self.new_password.errors.append('Password must be\
+                                        at least 6 characters,\
+                                        contain upper and lower\
+                                        case letters, and at least,\
+                                        one number')
+            return False
+        return True
+
+class ForgotCredentialForm(FlaskForm):
+    email = EmailField('email',
+                        validators=[DataRequired(),Email()])
+
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+        email = User.query.filter_by(email=self.email.data).first()
+        if email is None:
+            self.email.errors.append("Email not associated with\
+                                        any accounts")
+            return False
+        self.user = email
+        return True
+
 class AddWhitelistForm(FlaskForm):
     insta_username = SelectField('insta_username',
                                 choices=list(),
@@ -225,4 +361,3 @@ class RegisterForm(FlaskForm):
             self.email.errors.append('Email already in use')
             return False
         return True
-

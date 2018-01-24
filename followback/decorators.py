@@ -1,6 +1,6 @@
 from threading import Thread
 from flask_login import login_required
-from flask import redirect, url_for
+from flask import redirect, url_for, flash
 from functools import wraps
 from .views import g 
 
@@ -19,9 +19,11 @@ def login_required(role="ANY",confirmed=True):
             urole = g.user.get_role()
             uconfirmed = g.user.get_confirmed()
             if role == "Customer" and (urole != role):
+                flash("This is a paid feature","warning")
                 return redirect(url_for('purchase',username=g.user.username))
             elif confirmed and (uconfirmed != confirmed):
-                return redirect(url_for('resend_email',username=g.user.username))
+                flash("Confirm email first","warning")
+                return redirect(url_for('account',username=g.user.username))
             return fn(*args,**kwargs)
         return decorated_view
     return wrapper

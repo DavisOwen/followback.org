@@ -1,27 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% for message in get_flashed_messages() %}
-    <div class="alert alert-danger" role="alert">{{ message }}</div>
-  {% endfor %}
-  {% for error in form.username.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.password.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
-    <div class="card-header"><h1 class="col-md-4 offset-md-4">Login</h1></div>
-    <div class="card-block">
-    <form action="" method="post" name="login" class="col-md-4 offset-md-4">
+  <div class="col-md-4 offset-md-4 text-center">
+    <h1 class="text-nowrap">Login</h1>
+    <form action="" method="post" name="login"> 
         {{ form.hidden_tag() }}
         <div class="form-group">
           <label>Username</label>
+          {% for error in form.username.errors %}
+            <div class="text-danger">{{ error }}</div>
+          {% endfor %}
           {{ form.username(class_="form-control") }}
+          <div><a href="{{ url_for('forgot_username') }}" class=text-muted>Forgot Username?</a></div>
         </div>
         <div class="form-group">
           <label>Password</label>
+          {% for error in form.password.errors %}
+            <div class="text-danger">{{ error }}</div>
+          {% endfor %}
           {{ form.password(class_="form-control") }}
+          <div><a href="{{ url_for('forgot_password') }}" class=text-muted>Forgot Password?</a><div>
         </div>
         <div class="form-check">
           <label class="form-check-label">
@@ -31,7 +29,6 @@
         </div>
       <input type="submit" value="Sign In" class="btn btn-dark">
     </form>
-    </div>
   </div>
 {% endblock %}
 

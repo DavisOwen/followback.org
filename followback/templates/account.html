@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div>My Account</div>
+  <div>Email: {{ g.user.email }}
+  {% if g.user.confirmed == False %}
+    <div>Not confirmed yet</div>
+    <form action="{{ url_for('account',username=g.user.username) }}" method="post">
+      <input type="submit" name="resend" value="Resend Confirmation Email" class="btn btn-dark">
+    </form>
+  {% endif %}
+  </div>
+  <div>Username: {{ g.user.username }} <a href="{{url_for('change_username',username=g.user.username) }}">Change</a></div>
+  <div><a href="{{url_for('change_password',username=g.user.username) }}">Change Password</a></div>
+  <div>Payment plan: 
+    {% if g.user.role == "Customer" %}
+    Classic
+    <div>Renewal Date: {{ g.stop_date }}</div>
+    {% else %}
+      None <a href="{{url_for('purchase',username=g.user.username) }}">Learn More</a></div>
+    {% endif %}
+  </div>
+{% endblock %}

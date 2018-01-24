@@ -10,10 +10,9 @@
   {% for error in form.pages.errors %}
     <div class="alert alert-danger" role="alert">{{ error }}</div>
   {% endfor %}
-  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
-    <div class="card-header"><h1 class="col-md-4 offset-md-4">Bot Information</h1></div>
-    <div class="card-block">
-    <form action="" method="post" name="login" class="col-md-4 offset-md-4">
+  <div class="col-md-4 offset-md-4 text-center">
+    <h1 class="text-nowrap">FollowBack Bot</h1>
+    <form action="" method="post" name="login">
         {{ form.hidden_tag() }}
         <div class="form-group">
           <label>Instagram Username</label>
@@ -25,7 +24,8 @@
         </div>
         <div class="form-group">
           <label>Pages</label>
-          {{ form.pages(class_="form-control") }}
+          <br>
+          {{ form.pages(data_role="tagsinput", class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Likes Per Day</label>
@@ -41,6 +41,5 @@
         </div>
       <input type="submit" value="Start Bot" class="btn btn-dark">
     </form>
-    </div>
   </div>
 {% endblock %}

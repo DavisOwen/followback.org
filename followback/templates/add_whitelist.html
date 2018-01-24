@@ -7,10 +7,9 @@
   {% for error in form.users.errors %}
     <div class="alert alert-danger" role="alert">{{ error }}</div>
   {% endfor %}
-  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
-    <div class="card-header"><h1 class="col-md-4 offset-md-4">Bot Information</h1></div>
-    <div class="card-block">
-    <form action="" method="post" name="login" class="col-md-4 offset-md-4">
+  <div class="col-md-4 offset-md-4 text-center">
+    <h1 class="text-nowrap">Add Users</h1>
+    <form action="" method="post" name="login"> 
         {{ form.hidden_tag() }}
         <div class="form-group">
           <label>Instagram Username</label>
@@ -18,7 +17,8 @@
         </div>
         <div class="form-group">
           <label>Users to Add</label>
-          {{ form.users(class_="form-control") }}
+          <br>
+          {{ form.users(data_role="tagsinput", class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Make Whitelist?</label>
@@ -26,6 +26,5 @@
         </div>
       <input type="submit" value="Add Users to Whitelist" class="btn btn-dark">
     </form>
-    </div>
   </div>
 {% endblock %}

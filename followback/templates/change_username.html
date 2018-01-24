@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for error in form.new_username.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  {% for error in form.password.errors %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+  <div class="col-md-4 offset-md-4 text-center">
+    <h1 class="text-nowrap">Change Username</h1>
+    <form action="" method="post" name="change_username"> 
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>New Username</label>
+          {{ form.new_username(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          {{ form.password(class_="form-control") }}
+        </div>
+      <input type="submit" value="Submit" class="btn btn-dark">
+    </form>
+  </div>
+{% endblock %}
+

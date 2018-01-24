@@ -17,6 +17,10 @@
     <link rel= "stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
     <link rel= "stylesheet" href="{{ url_for('static',filename='css/device-mockups.css') }}">
 
+    <!-- Tag input CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/tagsinput.css') }}">
+
 		<!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -36,10 +40,11 @@
           <ul class="navbar-nav mr-auto">
             <li><a class="nav-item nav-link text-dark" href="{{ url_for('dashboard',username=g.user.username) }}" role="button">Dashboard </a></li>
             {% if g.user.role != "Customer" %}
-              <li><a class="nav-item nav-link text-dark" href="{{ url_for('purchase',username=g.user.username) }}" role="button">Purchase</a></li>
+              <li><a class="nav-item nav-link text-dark" href="{{ url_for('purchase',username=g.user.username) }}" role="button">Pricing</a></li>
             {% endif %}
           </ul>
           <ul class="navbar-nav">
+            <li><a class="nav-item nav-link text-dark" href="{{ url_for('account',username=g.user.username) }}">My Account</a></li>
             <li><a class="nav-item nav-link text-danger" href="{{ url_for('logout') }}">Logout</a></li>
           </ul>
         {% else %}
@@ -53,11 +58,15 @@
         {% endif %}
     </nav>
     {% for category, message in get_flashed_messages(with_categories=true) %}
-      <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+    <div class="alert alert-{{ category }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }}
+    </div>
     {% endfor %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     {% block content %}{% endblock %}
   </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static',filename='js/tagsinput.js') }}"></script>
+
 </html>

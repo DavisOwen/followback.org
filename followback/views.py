@@ -1,7 +1,7 @@
 from followback import app, db, lm, celery, celery_logger
 from flask import render_template, flash, redirect, g, session, url_for, request
 from flask_login import login_user, current_user, logout_user 
-from .forms import LoginForm, RegisterForm, BotForm, CheckpointForm, UnfollowForm, AddWhitelistForm, RegisterInstaForm
+from .forms import LoginForm, RegisterForm, BotForm, CheckpointForm, UnfollowForm, AddWhitelistForm, RegisterInstaForm, ChangeUsernameForm, ChangePasswordForm, ForgotCredentialForm, ResetPasswordForm
 from .models import User, InstaUser, PaypalTransaction, Whitelist
 from .decorators import login_required
 from .token import generate_confirmation_token, confirm_token
@@ -29,35 +29,106 @@ def register():
         db.session.commit()
         token = generate_confirmation_token(user.email)
         confirm_url = url_for('confirm_email',token=token, _external=True)
-        html = render_template('activate.html',confirm_url=confirm_url)
+        html = render_template('activate_email.html',confirm_url=confirm_url)
         subject = "Please confirm your email"
         send_email(subject,app.config['ADMINS'][0],[user.email],html)
         login_user(user)
-        flash('A confirmation email has been sent via email.', 'success')
-        return redirect(url_for('index'))
+        flash('A confirmation email has been sent to your email', 'success')
+        return redirect(url_for('account',username=user.username))
     return render_template('register.html',
                            title='Register',
                            form=form)
 
-@app.route('/<username>/resend_email',methods=['GET','POST'])
+@app.route('/<username>/account',methods=['GET','POST'])
 @login_required(confirmed=False)
-def resend_email(username):
+def account(username):
     if request.method == "POST":
-        token = generate_confirmation_token(g.user.email)
-        confirm_url = url_for('confirm_email',token=token, _external=True)
-        html = render_template('activate.html',confirm_url=confirm_url)
-        subject = "Please confirm your email"
-        send_email(subject,app.config['ADMINS'][0],[g.user.email],html)
-        flash("Confirmation email resent", "success")
-    return render_template('resend_email.html')
+        resend = request.form.get("resend","N/A")
+        if resend == "Resend Confirmation Email":
+            token = generate_confirmation_token(g.user.email)
+            confirm_url = url_for('confirm_email',token=token, _external=True)
+            html = render_template('activate_email.html',confirm_url=confirm_url)
+            subject = "Followback: Please confirm your email"
+            send_email(subject,app.config['ADMINS'][0],[g.user.email],html)
+            flash("Confirmation email resent", "success")
+    return render_template('account.html')
+
+@app.route('/<username>/change_username',methods=['GET','POST'])
+@login_required()
+def change_username(username):
+    form = ChangeUsernameForm(g.user)
+    if form.validate_on_submit():
+        g.user.username = form.new_username.data
+        db.session.add(g.user)
+        db.session.commit()
+        flash("Username Change Successful","success")
+    return render_template('change_username.html',
+                            form=form)
+
+@app.route('/<username>/change_password',methods=['GET','POST'])
+@login_required()
+def change_password(username):
+    form = ChangePasswordForm(g.user)
+    if form.validate_on_submit():
+        g.user.set_password(form.new_password.data)
+        db.session.add(g.user)
+        db.session.commit()
+        flash("Password Change Successful","success")
+    return render_template('change_password.html',
+                            form=form)
+
+@app.route('/forgot_password',methods=['GET','POST'])
+def forgot_password():
+    form = ForgotCredentialForm()
+    if form.validate_on_submit():
+        token = generate_confirmation_token(form.email.data)
+        confirm_url = url_for('reset_password',token=token, _external=True)
+        html = render_template('reset_password_email.html',confirm_url=confirm_url)
+        subject = "FollowBack: Reset Password"
+        send_email(subject,app.config['ADMINS'][0],[form.email.data],html)
+        flash("Email sent to %s with further instructions" % (form.email.data),"success")
+    return render_template('forgot_password.html',
+                            form=form)
+
+@app.route('/forgot_username',methods=['GET','POST'])
+def forgot_username():
+    form = ForgotCredentialForm()
+    if form.validate_on_submit():
+        html = render_template('forgot_username_email.html',username=form.user.username)
+        subject = "FollowBack: Username"
+        send_email(subject,app.config['ADMINS'][0],[form.email.data],html)
+        flash("Email sent to %s with your username" % (form.email.data),"success")
+        return redirect(url_for('login'))
+    return render_template('forgot_username.html',
+                            form=form)
+
+
+@app.route('/reset_password/<token>',methods=['GET','POST'])
+def reset_password(token):
+    form = ResetPasswordForm()
+    try:
+        email = confirm_token(token)
+    except:
+        flash("The reset link is invalid or has expired", "danger")
+        return render_template("reset_password.html",
+                                form=form)
+    user = User.query.filter_by(email=email).first()
+    if form.validate_on_submit():
+       user.set_password(form.new_password.data) 
+       db.session.add(user)
+       db.session.commit()
+       flash("Password Reset Successful","success")
+       return redirect(url_for('login'))
+    return render_template("reset_password.html",
+                            form=form)
 
 @app.route('/confirm/<token>')
-@login_required(confirmed=False)
 def confirm_email(token):
     try:
         email = confirm_token(token)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('index'))
     user = User.query.filter_by(email=email).first()
     if user.confirmed:
         flash('Account already confirmed. Please login.', 'success')
@@ -95,8 +166,10 @@ def before_request():
     if g.user.is_authenticated:
         if g.user.paypal_transactions:
             last_payment = g.user.paypal_transactions[-1].unix
+            last_payment = last_payment.date()
             from dateutil.relativedelta import relativedelta
             stop_date = last_payment + relativedelta(months=+1)
+            g.stop_date = stop_date
             stop_date += timedelta(days=1)
             if date.today() > stop_date:
                 g.user.role="User"

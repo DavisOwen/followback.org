@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="{{ url_for('resend_email',username=g.user.username) }}" method="post">
-      <input type="submit" value="Resend Confirmation Email">
+    <form action="" method="post">
+      <input type="submit" name="resend" value="Resend Confirmation Email">
     </form>
 {% endblock %}

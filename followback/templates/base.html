@@ -17,9 +17,10 @@
 
     <!-- Custom CSS -->
 
-    <!-- <link rel= "stylesheet" href="{{ url_for('static',filename='css/style.css') }}"> -->
     <link rel= "stylesheet" href="{{ url_for('static',filename='css/device-mockups.css') }}">
     <link rel= "stylesheet" href="{{ url_for('static',filename='css/new-age.css') }}">
+    <link rel= "stylesheet" href="{{ url_for('static',filename='css/pricing.css') }}">
+
 
     <!-- Tag input CSS -->
 
@@ -42,7 +43,6 @@
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="{{ url_for('index') }}"><img style="width:auto;height:50px;" src="{{ url_for('static',filename='img/fb_and_text_no_background_resize.png') }}"></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
           <i class="fa fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -68,42 +68,28 @@
         </div>
       </div>
     </nav>
-
-    <!--
-    <nav class="navbar navbar-light navbar-toggleable-md navbar-expand-md bg-light lato">
-      <a class="navbar-brand btn" href="{{ url_for('index') }}"><img class="logo" src="{{ url_for('static',filename='img/fb_and_text_no_background_resize.png') }}"></a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        {% if g.user.is_authenticated %}
-          <ul class="navbar-nav mr-auto">
-            <li><a class="nav-item nav-link text-dark" href="{{ url_for('dashboard',username=g.user.username) }}" role="button">Dashboard </a></li>
-            {% if g.user.role != "Customer" %}
-              <li><a class="nav-item nav-link text-dark" href="{{ url_for('purchase',username=g.user.username) }}" role="button">Pricing</a></li>
-            {% endif %}
-          </ul>
-          <ul class="navbar-nav">
-            <li><a class="nav-item nav-link text-dark" href="{{ url_for('account',username=g.user.username) }}">My Account</a></li>
-            <li><a class="nav-item nav-link text-danger" href="{{ url_for('logout') }}">Logout</a></li>
-          </ul>
-        {% else %}
-          <ul class="navbar-nav mr-auto">
-            <li><a class="nav-item nav-link text-dark" href="{{ url_for('register') }}" role="button">Register</a></li>
-          </ul>
-          <ul class="navbar-nav">
-            <li><a class="nav-item nav-link text-danger" href="{{ url_for('login') }}">Login</a></li>
-          <ul>
-        </div>
-        {% endif %}
-    </nav>
-    -->
     {% for category, message in get_flashed_messages(with_categories=true) %}
     <div class="alert alert-{{ category }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     {{ message }}
     </div>
     {% endfor %}
     {% block content %}{% endblock %}
+    <footer>
+      <div class="container">
+        <p>&copy; FollowBack.org 2018. All Rights Reserved.</p>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">Privacy</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Terms</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </footer>
   </body>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -111,5 +97,4 @@
   <script src="{{ url_for('static',filename='js/tagsinput.js') }}"></script>
   <script src="{{ url_for('static',filename='js/jquery.easing.js') }}"></script>
   <script src="{{ url_for('static',filename='js/new-age.js') }}"></script>
-
 </html>

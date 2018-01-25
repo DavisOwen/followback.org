@@ -1,23 +1,25 @@
 <html>
   {% extends 'base.html' %}
     {% block content %}
-    <!--
-		<header class="muli br-grad">
+    <header class="masthead">
       <div class="container h-100">
         <div class="row h-100">
-          <div class="col-lg-7 my-auto">
-            <div class="header-content mx-auto text-white">
-              <h1 class="mb-5">FollowBack is the most effective and affordable instagram bot on the market</h1>
-              <p>Starting at just $5 a month</p>
-              <a href="{{ url_for('register') }}" class="btn btn-light">Start your 1 week free trial</a><a href="#info" class="btn btn-dark">Learn More</a>
+         <div class="col-lg-7 my-auto">
+            <div class="header-content mx-auto">
+              <h1 class="mb-3">Real Followers<br>Real Engagement</h1>
+              <h4 class="mb-3 lato-text">the most effective and affordable Instagram Bot on planet earth<h4>
+                  <a href="#pricing" class="btn text-white">Starting at only $5</a>
+                  <hr>
+              <a href="#info" class="btn btn-outline btn-xl js-scroll-trigger">Learn More</a>
+              <a href="{{ url_for('register') }}" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>
             </div>
           </div>
           <div class="col-lg-5 my-auto">
             <div class="device-container">
-              <div class="device-mockup iphone6_plus portrait gold">
+              <div class="device-mockup iphone6_plus portrait white">
                 <div class="device">
                   <div class="screen">
-                    <img src="{{ url_for('static',filename='img/') }}" class="img-fluid" alt="">
+                    <img style="margin-top:180px;" src="{{ url_for('static',filename='img/arrow_no_background_resize.png') }}" class="img-fluid" alt="">
                   </div>
                 </div>
               </div>
@@ -27,46 +29,24 @@
       </div>
     </header>
 
-    <section class="muli laptop-bg" id="info">
+    <section class="features bg-primary text-center" id="info">
       <div class="container">
-        <div class="text-center">
-          <h2>Simple. Effective.</h2>
-          <p>FollowBack's algorithm was developed and tested with one goal in mind: Get you more followers!</p>
-          <hr>
-        </div>
-          <div class="col-lg-8 my-auto">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-screen-smartphone text-primary"></i>
-                    <h3>Device Mockups</h3>
-                    <p class="text-muted">Ready to use HTML/CSS device mockups, no Photoshop required!</p>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-camera text-primary"></i>
-                    <h3>Flexible Use</h3>
-                    <p class="text-muted">Put an image, video, animation, or anything else in the screen!</p>
-                  </div>
-                </div>
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <h2 class="section-heading">Follow Reciprocity</h2>
+            <hr>
+            <div class="row">
+              <div class="col-md-4 feature-item">
+                <i class="icon-heart text-primary"></i>
+                <p>FollowBack automatically follows and likes users that are interested in your page</p>
               </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-present text-primary"></i>
-                    <h3>Free to Use</h3>
-                    <p class="text-muted">As always, this theme is free to download and use for any purpose!</p>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-lock-open text-primary"></i>
-                    <h3>Open Source</h3>
-                    <p class="text-muted">Since this theme is MIT licensed, you can use it commercially!</p>
-                  </div>
-                </div>
+              <div class="col-md-4 feature-item">
+                <i class="icon-user-follow"></i>
+                <p>People are likely to follow you back after you have followed them</p>
+              </div>
+              <div class="col-md-4 feature-item">
+                <i class="icon-graph"></i>
+                <p>Increase traffic and engagement to your profile. It's the cheapest way to advertise your brand!</p>
               </div>
             </div>
           </div>
@@ -74,63 +54,36 @@
       </div>
     </section>
 
-    <footer class="muli br-grad">
+    <section class="features" id="simplicity">
       <div class="container">
-        <p class="text-white">Copyright &copy; 2017 Followup</p>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a class="text-white" href="{{ url_for('index') }}">Home</a>
-          </li>
-          <li class="list-inline-item">
-            <a class="text-white" href="#">FAQ</a>
-          </li>
-          <li class="list-inline-item">
-            <a class="text-white" href="#">Support</a>
-          </li>
-          <li class="list-inline-item">
-            <a class="text-white" href="#">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </footer>
-    -->
-    <header class="masthead">
-      <div class="container h-100">
-        <div class="row h-100">
-          <div class="col-lg-7 my-auto">
-            <div class="header-content mx-auto">
-              <h1 class="mb-5">New Age is an app landing page that will help you beautifully showcase your new mobile app, or anything else!</h1>
-              <a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>
-            </div>
-          </div>
-          <div class="col-lg-5 my-auto">
-            <div class="device-container">
-              <div class="device-mockup macbook">
-                <div class="device">
-                  <div class="screen">
-                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
-                    <img src="{{ url_for('static',filename='img/demo-screen-1.jpg') }}" class="img-fluid" alt="">
+        <div class="section-heading text-center">
+          <h2>Simplicity</h2>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 my-auto">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="feature-item">
+                    <i class="icon-organization text-primary"></i>
+                    <h3>Link Your Instagram Account</h3>
                   </div>
-                  <div class="button">
-                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                </div>
+                <div class="col-lg-4">
+                  <div class="feature-item">
+                    <i class="icon-people text-primary"></i>
+                    <h3>Choose popular pages in your niche</h3>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="feature-item">
+                    <i class="icon-cloud-upload text-primary"></i>
+                    <h3>Run your bot on the cloud, 24/7</h3>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <section class="download bg-primary text-center" id="download">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 mx-auto">
-            <h2 class="section-heading">Discover what all the buzz is about!</h2>
-            <p>Our app is available on any mobile device! Download now to get started!</p>
-            <div class="badges">
-              <a class="badge-link" href="#"><img src="{{ url_for('static',filename='img/google-play-badge.svg') }}" alt=""></a>
-              <a class="badge-link" href="#"><img src="{{ url_for('static',filename='img/app-store-badge.svg') }}" alt=""></a>
+              </div>
             </div>
           </div>
         </div>
@@ -140,59 +93,40 @@
     <section class="features" id="features">
       <div class="container">
         <div class="section-heading text-center">
-          <h2>Unlimited Features, Unlimited Fun</h2>
-          <p class="text-muted">Check out what you can do with this app theme!</p>
+          <h2>Features</h2>
           <hr>
         </div>
         <div class="row">
-          <div class="col-lg-4 my-auto">
-            <div class="device-container">
-              <div class="device-mockup macbook_2015 gold">
-                <div class="device">
-                  <div class="screen">
-                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
-                    <img src="{{ url_for('static',filename='img/demo-screen-1.jpg') }}" class="img-fluid" alt="">
-                  </div>
-                  <div class="button">
-                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-8 my-auto">
+          <div class="col-lg-12 my-auto">
             <div class="container-fluid">
               <div class="row">
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-screen-smartphone text-primary"></i>
-                    <h3>Device Mockups</h3>
-                    <p class="text-muted">Ready to use HTML/CSS device mockups, no Photoshop required!</p>
-                  </div>
+                <div class="col-lg-4">
+                  <h4 class="text-center">Follow Schedule</h4>
+                  <hr>
+                  <ul>
+                    <li>Specify maximum number of people to follow per day</li>
+                    <li>Specify maximum number of photos to like per day</li>
+                    <li>Mimics human activity to avoid account ban</li>
+                    <li>Unfollows all users not on Whitelist intermittently to avoid following too many people</li>
+                  </ul>
                 </div>
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-camera text-primary"></i>
-                    <h3>Flexible Use</h3>
-                    <p class="text-muted">Put an image, video, animation, or anything else in the screen!</p>
-                  </div>
+                <div class="col-lg-4">
+                  <h4 class="text-center">Record keeping</h4>
+                  <hr>
+                  <ul>
+                    <li>We automatically keep track of all the users you have liked and followed, and avoid interacting with them in the future to avoid spammy behavior</li>
+                    <li>Use the Dashboard to see current status of your running bot, including number of likes and follows to date</li>
+                </div>
+                <div class="col-lg-4">
+                  <h4 class="text-center">Whitelist</h4>
+                  <hr>
+                  <ul>
+                    <li>Whitelist is a list of users to never unfollow</li>
+                    <li>Automatically create a Whitelist from the users you are currently following</li>
+                    <li>Manually add users to Whitelist at any point</li>
+                  </ul>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-present text-primary"></i>
-                    <h3>Free to Use</h3>
-                    <p class="text-muted">As always, this theme is free to download and use for any purpose!</p>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="feature-item">
-                    <i class="icon-lock-open text-primary"></i>
-                    <h3>Open Source</h3>
-                    <p class="text-muted">Since this theme is MIT licensed, you can use it commercially!</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -200,56 +134,36 @@
       </div>
     </section>
 
-    <section class="cta">
-      <div class="cta-content">
+
+    <section class="download" id="pricing">
         <div class="container">
-          <h2>Stop waiting.<br>Start building.</h2>
-          <a href="#contact" class="btn btn-outline btn-xl js-scroll-trigger">Let's Get Started!</a>
-        </div>
-      </div>
-      <div class="overlay"></div>
+          <h2 class="text-white text-center">Pricing</h2>
+          <div class="row db-padding-btm db-attached">
+						<div class="col-md-4 offset-md-4">
+                <div class="db-wrapper">
+                    <div class="db-pricing-eleven db-bk-color-one">
+                        <div class="price">
+                            <sup>$</sup>5
+                                <small>per month</small>
+                        </div>
+                        <div class="type">
+													CLASSIC
+                        </div>
+                        <ul>
+                            <li><i class="icon-user-follow"></i>Unlimited Liking And Following</li>
+                            <li><i class="icon-notebook"></i>Make And Edit Whitelist</li>
+                            <li><i class="icon-user-unfollow"></i>Unlimited Unfollowing</li>
+														<li><i class="icon-info"></i>One Linked Instagram Account</li>
+                        </ul>
+                        <div class="pricing-footer">
+
+                            <a href="{{ url_for('register') }}" class="btn db-button-color-square btn-lg">START 7 DAY FREE TRIAL</a></div>
+                    </div>
+                </div>
+            </div>
+          </div>
+				</div>
     </section>
 
-    <section class="contact bg-primary" id="contact">
-      <div class="container">
-        <h2>We
-          <i class="fa fa-heart"></i>
-          new friends!</h2>
-        <ul class="list-inline list-social">
-          <li class="list-inline-item social-twitter">
-            <a href="#">
-              <i class="fa fa-twitter"></i>
-            </a>
-          </li>
-          <li class="list-inline-item social-facebook">
-            <a href="#">
-              <i class="fa fa-facebook"></i>
-            </a>
-          </li>
-          <li class="list-inline-item social-google-plus">
-            <a href="#">
-              <i class="fa fa-google-plus"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <footer>
-      <div class="container">
-        <p>&copy; Your Website 2018. All Rights Reserved.</p>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="#">Privacy</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">Terms</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">FAQ</a>
-          </li>
-        </ul>
-      </div>
-    </footer>
     {% endblock %}
 </html>

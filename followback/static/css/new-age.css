@@ -19,6 +19,16 @@ a:hover, a:focus {
   color: #fcbd20;
 }
 
+#pricing {
+  background-image: url('../img/nightline.jpeg');
+}
+
+#simplicity{
+  color:white;
+  background: #7b4397;
+  background: url("../img/light-honeycomb.png"), linear-gradient(to left, #7b4397, #dc2430);
+}
+
 hr {
   max-width: 100px;
   margin: 25px auto 0;
@@ -173,6 +183,11 @@ header.masthead .device-container {
   max-width: 325px;
   margin-right: auto;
   margin-left: auto;
+}
+
+header.masthead .device-container .screen {
+  background: url('../img/light-wool.png'), #913B7D; 
+  background: url('../img/light-wool.png'), linear-gradient(to right, #A2366C, #913B7D);
 }
 
 header.masthead .device-container .screen img {
@@ -426,6 +441,12 @@ footer ul li a:hover, footer ul li a:focus, footer ul li a:active, footer ul li 
 
 .btn {
   border-radius: 300px;
+  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.lato-text{
   font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
   letter-spacing: 2px;
   text-transform: uppercase;

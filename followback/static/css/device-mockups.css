@@ -92,7 +92,7 @@
 }
 
 .device-mockup.macbook > .device {
-	background-image: url("macbook/macbook.png");
+	background-image: url("../img/macbook.png");
 }
 
 .device-mockup.macbook > .device > .screen {
@@ -116,7 +116,7 @@
 
 .device-mockup.macbook_2015 > .device,
 .device-mockup.macbook_2015.gold > .device {
-	background-image: url("macbook_2015/gold.png");
+	background-image: url("../img/gold.png");
 }
 
 .device-mockup.macbook_2015 > .device > .screen {
@@ -324,7 +324,7 @@
 
 .device-mockup.iphone6_plus.white > .device,
 .device-mockup.iphone6_plus.portrait.white > .device {
-	background-image: url("iphone_6_plus/iphone_6_plus_white_port.png");
+	background-image: url("../img/iphone_6_plus_white_port.png");
 }
 
 .device-mockup.iphone6_plus.landscape.white > .device {
@@ -333,7 +333,7 @@
 
 .device-mockup.iphone6_plus.gold > .device,
 .device-mockup.iphone6_plus.portrait.gold > .device {
-	background-image: url("../img/iphone_6_plus_gold_port.png");
+	background-image: url("iphone_6_plus/iphone_6_plus_gold_port.png");
 }
 
 .device-mockup.iphone6_plus.landscape.gold > .device {

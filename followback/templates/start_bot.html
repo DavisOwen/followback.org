@@ -1,45 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% for error in form.insta_username.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.insta_password.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.pages.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  <div class="col-md-4 offset-md-4 text-center">
+  <header class="masthead">
+  <div class="col-md-4 offset-md-4 text-center h-100 form-div">
     <h1 class="text-nowrap">FollowBack Bot</h1>
     <form action="" method="post" name="login">
         {{ form.hidden_tag() }}
         <div class="form-group">
           <label>Instagram Username</label>
+          {% for error in form.insta_username.errors %}
+            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+          {% endfor %}
           {{ form.insta_username(class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Instagram Password</label>
+          {% for error in form.insta_password.errors %}
+            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+          {% endfor %}
           {{ form.insta_password(class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Pages</label>
+          {% for error in form.pages.errors %}
+            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+          {% endfor %}
           <br>
           {{ form.pages(data_role="tagsinput", class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Likes Per Day</label>
+          {% for error in form.likes_per_day.errors %}
+            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+          {% endfor %}
           {{ form.likes_per_day(class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Follows Per Day</label>
+          {% for error in form.follows_per_day.errors %}
+            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+          {% endfor %}
           {{ form.follows_per_day(class_="form-control") }}
         </div>
         <div class="form-check">
-          <label>Use Whitelist?</label>
+          <label>Use Whitelist</label>
           {{ form.use_whitelist(class_="form-control") }}
         </div>
       <input type="submit" value="Start Bot" class="btn btn-dark">
     </form>
   </div>
+  </header>
 {% endblock %}

@@ -142,11 +142,11 @@ def confirm_email(token):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if g.user is not None and g.user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         login_user(form.user,form.remember_me.data)
-        return redirect(request.args.get('next') or url_for('index'))
+        return redirect(request.args.get('next') or url_for('dashboard',username=g.user.username))
     return render_template('login.html',
                             title='Sign In',
                             form=form)
@@ -389,7 +389,7 @@ def start_bot(username,insta_user):
     form = BotForm(insta_user_list)
     if form.validate_on_submit():
         user_info_string = "https://www.instagram.com/%s/?__a=1"
-        req = requests.get(user_info_string % (self.insta_username.data))
+        req = requests.get(user_info_string % (form.insta_username.data))
         json = req.json()
         pk = json['user']['id']
         insta_user = InstaUser.query.filter_by(pk=pk).first()
@@ -463,7 +463,7 @@ def unfollowbot(username,insta_user):
     form = UnfollowForm(insta_user_list)
     if form.validate_on_submit():
         user_info_string = "https://www.instagram.com/%s/?__a=1"
-        req = requests.get(user_info_string % (self.insta_username.data))
+        req = requests.get(user_info_string % (form.insta_username.data))
         json = req.json()
         pk = json['user']['id']
         insta_user = InstaUser.query.filter_by(pk=pk).first()
@@ -553,7 +553,7 @@ def add_whitelist(username,insta_user):
         insta_user = InstaUser.query.filter_by(pk=pk).first()
         if insta_user is not None:
             if insta_user not in g.user.insta_users:
-                form.insta_username.errors.append('Instagram Account %s already registered with another account' % (self.insta_username.data))
+                form.insta_username.errors.append('Instagram Account %s already registered with another account' % (form.insta_username.data))
                 return render_template('add_whitelist.html',
                                         form=form)
         else:
@@ -565,7 +565,7 @@ def add_whitelist(username,insta_user):
             getter = Getter(form.insta_username.data,form.insta_password.data)
             status = getter.login()
             if status:
-                followings = self.getter.getTotalSelfFollowings()
+                followings = getter.getTotalSelfFollowings()
                 for user in followings:
                     pk = Whitelist(pk=user['pk'])
                     insta_user.whitelist.append(pk)  
@@ -605,7 +605,7 @@ def register_insta(username):
             insta_user = InstaUser.query.filter_by(pk=pk).first()
             if insta_user is not None:
                 if insta_user not in g.user.insta_users:
-                    form.insta_username.errors.append('Instagram Account %s already registered ' % (self.insta_username.data))
+                    form.insta_username.errors.append('Instagram Account %s already registered ' % (form.insta_username.data))
                 else:
                     insta_user.username=form.insta_username.data
                     db.session.add(insta_user)

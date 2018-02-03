@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<header class="masthead"> 
+  <div class="col-md-2 offset-md-5 text-center h-100">
   <div>Registered accounts</div>
   {% if g.user.insta_users %}
     {% for user in g.user.insta_users %}
@@ -18,5 +20,7 @@
     No accounts registered! 
     <a href="{{ url_for('register_insta',username=g.user.username) }}">Register here</a>
   {% endif %}
+  </div>
+</header>
 {% endblock %}
 

@@ -1,39 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% for error in form.username.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.password.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.confirm_password.errors %}
-    <div class="alert alert-danger">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.email.errors %}
-    <div class="alert alert-danger">{{ error }}</div>
-  {% endfor %}
-  <div class="col-md-4 offset-md-4 text-center">
+  <header class="masthead">
+  <div class="col-md-2 offset-md-5 text-center form-div">
     <h1 class="text-nowrap">Register</h1>
     <form action="" method="post" name="register">
         {{ form.hidden_tag() }}
         <div class="form-group">
           <label>Email</label>
+          {% for error in form.email.errors %}
+            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
+          {% endfor %}
             {{ form.email(class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Username</label>
+          {% for error in form.username.errors %}
+          <div class="error-msg text-nowrap" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
             {{ form.username(class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Password</label>
+          {% for error in form.password.errors %}
+            <div class="error-msg text-nowrap" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
           {{ form.password(class_="form-control") }}
         </div>
         <div class="form-group">
           <label>Confirm Password</label>
+          {% for error in form.confirm_password.errors %}
+            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
+          {% endfor %}
           {{ form.confirm_password(class_="form-control") }}
         </div>
         <input type="submit" value="Register" class="btn btn-dark">
     </form>
   </div>
+  </header>
 {% endblock %}

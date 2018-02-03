@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if g.user.role == "Customer" %}
+  <div>Already subscribed</div>
+{% else %}
   <div>Purchase here!</div>
 		<form name="topaypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 			<input type="hidden" name="cmd" value="_xclick-subscriptions">
@@ -19,5 +22,6 @@
 			<input type="hidden" name="notify_url" value="{{ url_for('ipn',_external=True) }}">
 			<input type="submit" value="Subscribe" name="submit" title="PayPal - The safer, easier way to pay online!" class="btn btn-danger">
 		</form>
+{% endif %}
 {% endblock %}
 

@@ -14,7 +14,7 @@ class TagListField(Field):
         if self.data:
             return u', '.join(self.data)
         else:
-            return u''
+            return u'' 
 
     def process_formdata(self, valuelist):
         if valuelist:
@@ -218,6 +218,9 @@ class AddWhitelistForm(FlaskForm):
         rv = FlaskForm.validate(self)
         if not rv:
             return False
+        if self.users.data[0] == u'':
+            self.users.errors.append('This field is required')
+            return False
         import requests
         req_string = "https://www.instagram.com/%s"
         req = requests.get(req_string % (self.insta_username.data))
@@ -288,7 +291,6 @@ class BotForm(FlaskForm):
             return False
         import requests
         req_string = "https://www.instagram.com/%s"
-        user_info_string = "https://www.instagram.com/%s/?__a=1"
         req = requests.get(req_string % (self.insta_username.data))
         if req.status_code != 200:
             self.insta_username.errors.append('User %s does not exist' % self.insta_username.data)

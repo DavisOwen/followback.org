@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<header class="masthead">
+  <div class="col-md-4 offset-md-4 h-100">
   <div>My Account</div>
   <div>Email: {{ g.user.email }}
   {% if g.user.confirmed == False %}
@@ -20,4 +22,6 @@
       None <a href="{{url_for('purchase',username=g.user.username) }}">Learn More</a></div>
     {% endif %}
   </div>
+  </div>
+</header>
 {% endblock %}

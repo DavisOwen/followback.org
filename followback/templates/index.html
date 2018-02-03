@@ -1,5 +1,4 @@
-<html>
-  {% extends 'base.html' %}
+{% extends "base.html" %}
     {% block content %}
     <header class="masthead">
       <div class="container h-100">
@@ -11,7 +10,9 @@
                   <a href="#pricing" class="btn text-white">Starting at only $5</a>
                   <hr>
               <a href="#info" class="btn btn-outline btn-xl js-scroll-trigger">Learn More</a>
-              <a href="{{ url_for('register') }}" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>
+              {% if g.user.is_authenticated == False %}
+                <a href="{{ url_for('register') }}" class="btn btn-outline btn-xl js-scroll-trigger">Start 1 week for Free!</a>
+              {% endif %}
             </div>
           </div>
           <div class="col-lg-5 my-auto">
@@ -157,7 +158,11 @@
                         </ul>
                         <div class="pricing-footer">
 
-                            <a href="{{ url_for('register') }}" class="btn db-button-color-square btn-lg">START 7 DAY FREE TRIAL</a></div>
+                          {% if g.user.is_authenticated %}
+                            <a href="{{ url_for('purchase',username=g.user.username) }}" class="btn db-button-color-square btn-lg">SUBSCRIBE</a></div>
+                          {% else %}
+                            <a href="{{ url_for('register') }}" class="btn db-button-color-square btn-lg">FREE TRIAL</a></div>
+                          {% endif %}
                     </div>
                 </div>
             </div>
@@ -166,4 +171,3 @@
     </section>
 
     {% endblock %}
-</html>

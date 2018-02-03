@@ -2,33 +2,33 @@
 
 {% block content %}
   <header class="masthead">
-  <div class="col-md-4 offset-md-4 text-center h-100">
+  <div class="col-md-2 offset-md-5 text-center h-100 form-div ">
     <h1 class="text-nowrap">Login</h1>
     <form action="" method="post" name="login"> 
         {{ form.hidden_tag() }}
         <div class="form-group">
           <label>Username</label>
           {% for error in form.username.errors %}
-            <div class="text-danger">{{ error }}</div>
+            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
           {% endfor %}
           {{ form.username(class_="form-control") }}
-          <div><a href="{{ url_for('forgot_username') }}" class=text-muted>Forgot Username?</a></div>
+          <div><a href="{{ url_for('forgot_username') }}" class="text-nowrap text-white">Forgot Username?</a></div>
         </div>
         <div class="form-group">
           <label>Password</label>
           {% for error in form.password.errors %}
-            <div class="text-danger">{{ error }}</div>
+            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
           {% endfor %}
           {{ form.password(class_="form-control") }}
-          <div><a href="{{ url_for('forgot_password') }}" class=text-muted>Forgot Password?</a><div>
+          <div><a href="{{ url_for('forgot_password') }}" class="text-nowrap text-white">Forgot Password?</a><div>
         </div>
         <div class="form-check">
-          <label class="form-check-label">
+          <label class="text-nowrap form-check-label">
             {{ form.remember_me(class_="form-check-input") }} 
             Remember Me
           </label>
         </div>
-      <input type="submit" value="Sign In" class="btn btn-dark">
+      <input type="submit" value="Sign In" class="btn">
     </form>
   </div>
   </header>

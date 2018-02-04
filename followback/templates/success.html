@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div>Success</div>
-  <div>Sometimes it takes a couple minutes for the transaction to complete. If you cannot access premium features in a couples minutes please contact support</div>
+  <header class="masthead">
+    <div class="col-md-2 offset-md-5 text-center h-100 form-div">
+      <h1 class="text-nowarp">Success!</h1>
+      <div>Sometimes it takes a couple minutes for the transaction to complete. If you cannot access premium features in a couples minutes please <a href="{{ url_for('support') }}">contact support</a></div>
+  </header>
 {% endblock %}
 

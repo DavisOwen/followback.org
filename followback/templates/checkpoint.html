@@ -1,28 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% for error in form.code.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.password.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
-    <div class="card-header"><h1 class="col-md-4 offset-md-4">Checkpoint</h1></div>
-    <div class="card-block">
-      <div>{{ checkpoint_msg }}</div>
-    <form action="" method="post" name="login" class="col-md-4 offset-md-4">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-          <label>Re-enter Password</label>
-          {{ form.password(class_="form-control") }}
+<header class="masthead">
+  <div class="h-100 form-div">
+    <div class="row">
+      <div style="padding-top:87px;" class="col-md-3 offset-md-2">
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="card bot-card">
+            <div class="card-header" role="tab" id="headingOne">
+              <h6 class="mb-0">
+                Re-enter Password
+                <a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="" aria-controls="collapseOne">
+                  <i class="icon-arrow-down"></i>		
+                </a>
+              </h6>
+            </div>
+            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="card-block">
+                The first attempt to login failed because Instagram did not recognize the new login location. Please re-enter your password. Remember that we do not save your Instagram passwords for your security; it goes straight to Instagram.
+              </div>
+            </div>
+          </div>
+          <div class="card bot-card">
+            <div class="card-header" role="tab" id="headingTwo">
+              <h6 class="mb-0">
+                Security Code
+                <a class="collapsed text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <i class="icon-arrow-down"></i>		
+                </a>
+              </h6>
+            </div>
+            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="card-block">
+                The validation code Instagram sends to your email associate with your Instagram account. Use it to verify it is you logging in. 
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Code</label>
-          {{ form.code(class_="form-control") }}
+      </div>
+      <div class="col-md-3 offset-md-2 text-center">
+        <h1 class="">Checkpoint</h1>
+        <form action="" method="post" name="login">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+              <label>Re-enter Password</label>
+              {% for error in form.password.errors %}
+                <div class="error-msg text-nowrap" role="alert"><strong>{{ error }}</strong></div>
+              {% endfor %}
+              {{ form.password(class_="form-control") }}
+            </div>
+            <div class="form-group">
+              <label>Security Code</label>
+              {% for error in form.code.errors %}
+                <div class="error-msg text-nowrap" role="alert"><strong>{{ error }}</strong></div>
+              {% endfor %}
+              {{ form.code(class_="form-control") }}
+            </div>
+          <input type="submit" value="Submit" class="btn btn-dark">
+        </form>
         </div>
-      <input type="submit" value="Submit" class="btn btn-dark">
-    </form>
+      </div>
+      </div>
     </div>
-  </div>
+</header>
 {% endblock %}

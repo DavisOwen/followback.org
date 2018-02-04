@@ -1,6 +1,9 @@
 .form-div {
-  padding-top:80px;
+  padding-top:120px;
 }
 .error-msg{
   color:yellow;
+}
+.bot-card{
+  background:transparent !important; 
 }

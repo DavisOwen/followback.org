@@ -48,12 +48,15 @@ class NoPayment(Exception):
 
 def check_payment(insta_user):
     user = User.query.filter_by(insta_users=insta_user).first()
-    last_payment = user.paypal_transactions[-1].unix
-    from dateutil.relativedelta import relativedelta
-    stop_date = last_payment + relativedelta(months=+1)
-    stop_date += datetime.timedelta
+    if user.paypal_transactions:
+        last_payment = user.paypal_transactions[-1].unix
+        from dateutil.relativedelta import relativedelta
+        stop_date = last_payment + relativedelta(months=+1)
+        stop_date += datetime.timedelta(days=1)
+    elif user.confirmed:
+        stop_date = user.datetime_created + datetime.timedelta(days=7)
     if datetime.date.today() > stop_date:
-        user.role = "Customer"
+        user.role = "User"
         db.session.add(user)
         db.session.commit()
         raise NoPayment
@@ -92,7 +95,7 @@ class InstagramBot:
         and the users whitelist
         '''
         self.user = self.get_user(self.username)
-        self.super_user = User.query.filter_by(insta_user=self.user).first()
+        self.super_user = User.query.filter(User.insta_users.contains(self.user)).first()
         self.following = self.get_followed()
         self.max_id = self.get_max_id(self.pages)
         self.whitelist = self.get_whitelist(self.use_whitelist)

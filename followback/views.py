@@ -30,13 +30,12 @@ def register():
         token = generate_confirmation_token(user.email)
         confirm_url = url_for('confirm_email',token=token, _external=True)
         html = render_template('activate_email.html',confirm_url=confirm_url)
-        subject = "Please confirm your email"
+        subject = "Followback: Please confirm your email"
         send_email(subject,app.config['ADMINS'][0],[user.email],html)
         login_user(user)
         flash('A confirmation email has been sent to your email', 'success')
         return redirect(url_for('account',username=user.username))
     return render_template('register.html',
-                           title='Register',
                            form=form)
 
 @app.route('/<username>/account',methods=['GET','POST'])
@@ -44,7 +43,7 @@ def register():
 def account(username):
     if request.method == "POST":
         resend = request.form.get("resend","N/A")
-        if resend == "Resend Confirmation Email":
+        if resend != "N/A":
             token = generate_confirmation_token(g.user.email)
             confirm_url = url_for('confirm_email',token=token, _external=True)
             html = render_template('activate_email.html',confirm_url=confirm_url)
@@ -52,6 +51,10 @@ def account(username):
             send_email(subject,app.config['ADMINS'][0],[g.user.email],html)
             flash("Confirmation email resent", "success")
     return render_template('account.html')
+
+@app.route('/support')
+def support():
+    return render_template('support.html')
 
 @app.route('/<username>/change_username',methods=['GET','POST'])
 @login_required()
@@ -106,19 +109,22 @@ def forgot_username():
 @app.route('/reset_password/<token>',methods=['GET','POST'])
 def reset_password(token):
     form = ResetPasswordForm()
-    try:
-        email = confirm_token(token)
-    except:
+    email = confirm_token(token)
+    if email:
+        user = User.query.filter_by(email=email).first()
+        if user is not None:
+            if form.validate_on_submit():
+               user.set_password(form.new_password.data) 
+               db.session.add(user)
+               db.session.commit()
+               flash("Password Reset Successful","success")
+               return redirect(url_for('login'))
+        else:
+            flash("Email does not correspond to any registered users","danger")
+            return redirect(url_for("index"))
+    else:
         flash("The reset link is invalid or has expired", "danger")
-        return render_template("reset_password.html",
-                                form=form)
-    user = User.query.filter_by(email=email).first()
-    if form.validate_on_submit():
-       user.set_password(form.new_password.data) 
-       db.session.add(user)
-       db.session.commit()
-       flash("Password Reset Successful","success")
-       return redirect(url_for('login'))
+        return redirect(url_for("index"))
     return render_template("reset_password.html",
                             form=form)
 
@@ -134,6 +140,7 @@ def confirm_email(token):
         flash('Account already confirmed. Please login.', 'success')
     else:
         user.confirmed = True
+        user.datetime_created = date.today()
         db.session.add(user)
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
@@ -169,8 +176,16 @@ def before_request():
             last_payment = last_payment.date()
             from dateutil.relativedelta import relativedelta
             stop_date = last_payment + relativedelta(months=+1)
-            g.stop_date = stop_date
             stop_date += timedelta(days=1)
+            g.stop_date = stop_date
+            if date.today() > stop_date:
+                g.user.role="User"
+                db.session.add(g.user)
+                db.session.commit()
+        elif g.user.confirmed:
+            created_date = g.user.datetime_created.date()
+            stop_date = created_date + timedelta(days=7)
+            g.stop_date = stop_date
             if date.today() > stop_date:
                 g.user.role="User"
                 db.session.add(g.user)
@@ -293,7 +308,7 @@ def instabot(self,**kwargs):
     if function == "bot":
         logfile = 'logs/instabot/%s.log' % args['username']
         handler = logging.handlers.RotatingFileHandler(logfile,'a',1*1024*1024, 10)
-        handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in % (pathname)s:%(lineno)d]'))
+        handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
         celery_logger.addHandler(handler)
         celery_logger.setLevel(logging.DEBUG)
         status = bot.login_getter()
@@ -308,12 +323,12 @@ def instabot(self,**kwargs):
                                 "follows":0,
                                 "start_time":start_time,
                                 "end_time":0})
-        result = bot.loop(self,start_time,celery_logger)
+        result = bot.loop(self,start_time)
         return result
     elif function == "unfollow":
         logfile = 'logs/unfollowbot/%s.log' % args['username']
         handler = logging.handlers.RotatingFileHandler(logfile,'a',1*1024*1024,10)
-        handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in % (pathname)s:%(lineno)d]'))
+        handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
         celery_logger.addHandler(handler)
         celery_logger.setLevel(logging.DEBUG)
         status = bot.login_getter()
@@ -330,9 +345,9 @@ def instabot(self,**kwargs):
         result = bot.unfollow(state=self,start_time=start_time)
         return result
 
-@app.route('/<username>/<insta_user>/checkpoint',methods=['GET','POST'])
+@app.route('/<username>/checkpoint',methods=['GET','POST'])
 @login_required(role='Customer')
-def checkpoint(username,insta_user):
+def checkpoint(username):
     form = CheckpointForm()
     response = session['response']
     checkpoint_msg = 'Security code sent to email \
@@ -371,20 +386,21 @@ def checkpoint(username,insta_user):
             form.password.errors.append(message)
             return render_template('checkpoint.html', 
                                     form=form, 
-                                    checkpoint_msg=checkpoint_msg)
+                                    )
         elif status == 3:
             message = 'Incorrect checkpoint code'
             form.code.errors.append(message)
             return render_template('checkpoint.html', 
                                     form=form, 
-                                    checkpoint_msg=checkpoint_msg)
+                                    )
+    flash(checkpoint_msg,"info")
     return render_template('checkpoint.html', 
                             form=form, 
-                            checkpoint_msg=checkpoint_msg)
+                            )
 
-@app.route('/<username>/<insta_user>/start_bot',methods=['GET','POST'])
+@app.route('/<username>/start_bot',methods=['GET','POST'])
 @login_required(role='Customer')
-def start_bot(username,insta_user):
+def start_bot(username):
     insta_user_list = [ (x.username,x.username) for x in g.user.insta_users]
     form = BotForm(insta_user_list)
     if form.validate_on_submit():
@@ -399,13 +415,14 @@ def start_bot(username,insta_user):
                 return render_template('start_bot.html',
                                     form=form)
             else:
-                bot_id = insta_user.bot_id
-                status = instabot.AsyncResult(bot_id)
-                if status.state == "PROGRESS":
-                    message = "This user is already running a bot!"
-                    form.insta_username.errors.append(message)
-                    return render_template('start_bot.html',
-                                            form=form)
+                if insta_user.bot_id is not None:
+                    bot_id = insta_user.bot_id
+                    status = instabot.AsyncResult(bot_id)
+                    if status.state == "PROGRESS":
+                        message = "This user is already running a bot!"
+                        form.insta_username.errors.append(message)
+                        return render_template('start_bot.html',
+                                                form=form)
         else:
             form.insta_username.errors.append("Instagram Account not yet registered with this account. <a href='" + {{ url_for('register_insta',username=g.user.username) }} + "'>Register here</a>")
             return render_template('start_bot.html',
@@ -445,7 +462,7 @@ def start_bot(username,insta_user):
             session['function']= 'bot'
             return redirect(url_for('checkpoint',
                                     username=username,
-                                    insta_user=insta_user))
+                                    ))
         elif status == 4:
             app.logger.error('Unknown login error with response %s' % (response))
             flash('Unknown Login Error; Our team has been notified', 'danger')
@@ -456,9 +473,9 @@ def start_bot(username,insta_user):
                             form = form
                             )
 
-@app.route('/<username>/<insta_user>/unfollowbot',methods=['GET','POST'])
+@app.route('/<username>/unfollowbot',methods=['GET','POST'])
 @login_required(role='Customer')
-def unfollowbot(username,insta_user):
+def unfollowbot(username):
     insta_user_list = [ (x.username,x.username) for x in g.user.insta_users]
     form = UnfollowForm(insta_user_list)
     if form.validate_on_submit():
@@ -530,7 +547,7 @@ def unfollowbot(username,insta_user):
             session['function'] = 'unfollow'
             return redirect(url_for('checkpoint',
                                     username=username,
-                                    insta_user=insta_user))
+                                    ))
         elif status == 4:
             app.logger.error('Unknown login error with response %s' % (response))
             flash('Unknown Login Error; Our team has been notified', 'danger')
@@ -540,9 +557,9 @@ def unfollowbot(username,insta_user):
                             form = form
                             )
 
-@app.route('/<username>/<insta_user>/add_whitelist',methods=['GET','POST'])
+@app.route('/<username>/add_whitelist',methods=['GET','POST'])
 @login_required(role="Customer")
-def add_whitelist(username,insta_user):
+def add_whitelist(username):
     insta_user_list = [ (x.username,x.username) for x in g.user.insta_users]
     form = AddWhitelistForm(insta_user_list)
     if form.validate_on_submit():
@@ -611,12 +628,14 @@ def register_insta(username):
                     db.session.add(insta_user)
                     db.session.commit()
                     flash("Name change successful",'success')
+                    return redirect(url_for('dashboard',username=g.user.username))
             else:
                 insta_user = InstaUser(username=form.insta_username.data,pk=pk)
                 g.user.insta_users.append(insta_user)
                 db.session.add(g.user)
                 db.session.commit()
                 flash("Registration successful",'success')
+                return redirect(url_for('dashboard',username=g.user.username))
         else:
             flash("Error logging in with these credentials", 'danger')
     return render_template('register_insta.html',

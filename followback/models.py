@@ -54,7 +54,7 @@ class MaxID(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     insta_user_id = db.Column(db.Integer, db.ForeignKey('insta_users.id', ondelete='CASCADE'))
     page = db.Column(db.String(30))
-    max_id = db.Column(db.String(64))
+    max_id = db.Column(db.String(120))
 
 class Whitelist(db.Model):
     __tablename__ = 'whitelists'

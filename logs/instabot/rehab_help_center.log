@@ -835,3 +835,8 @@ Liked friduliini's media
 Followed ladybabadook
 Liked big_a_tron's media
 Bot stopped by user
+2018-02-04 06:09:32,666 INFO: Scraping from drugrehabcenters [in /home/sowen/followback/followback/InstagramBot/InstagramBot.py:328]
+2018-02-04 06:11:09,614 INFO: Liked _francourt_'s media [in /home/sowen/followback/followback/InstagramBot/InstagramBot.py:395]
+2018-02-04 06:11:56,976 INFO: Followed _francourt_ [in /home/sowen/followback/followback/InstagramBot/InstagramBot.py:434]
+2018-02-04 06:12:45,984 INFO: Liked irwinholt's media [in /home/sowen/followback/followback/InstagramBot/InstagramBot.py:395]
+2018-02-04 06:13:58,426 WARNING: Bot stopped by user [in /home/sowen/followback/followback/InstagramBot/InstagramBot.py:235]

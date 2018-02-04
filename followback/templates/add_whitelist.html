@@ -2,38 +2,103 @@
 
 {% block content %}
   <header class="masthead">
-  <div class="col-md-4 offset-md-4 text-center h-100 form-div">
-    <h1 class="text-nowrap">Add Users</h1>
-    <form action="" method="post" name="add_whitelist"> 
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-          <label class="text-nowrap">Instagram Username</label>
-          {% for error in form.insta_username.errors %}
-            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
-          {% endfor %}
-          {{ form.insta_username(class_="form-control") }}
+    <div class="h-100 form-div">
+      <div class="row">
+        <div style="padding-top:87px;" class="col-md-3 offset-md-2">
+          <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="card bot-card">
+              <div class="card-header" role="tab" id="headingOne">
+                <h6 class="mb-0">
+                  Instagram Username
+                  <a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="" aria-controls="collapseOne">
+                    <i class="icon-arrow-down"></i>		
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+                  Your Instagram Username. Select from a list of your registered accounts. Since we are in alpha stage right now, you can only register one account. 
+                </div>
+              </div>
+            </div>
+            <div class="card bot-card">
+              <div class="card-header" role="tab" id="headingTwo">
+                <h6 class="mb-0">
+                  Instagram Password
+                  <a class="collapsed text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <i class="icon-arrow-down"></i>		
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="card-block">
+                  Your Instagram Password. Note we ask you to enter your password every time we interact with your Instagram Account. This is for your security, so we do not have to store your password on our servers.
+                </div>
+              </div>
+            </div>
+            <div class="card bot-card">
+              <div class="card-header" role="tab" id="headingThree">
+                <h6 class="mb-0">
+                  Add Users
+                  <a class="collapsed text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <i class="icon-arrow-down"></i>		
+                  </a>
+                </h6> </div>
+              <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="card-block">
+                  Enter all the users you want to add to the whitelist. Make sure the names are spelled correctly. Hit enter key after entering each name.
+                </div>
+              </div>
+            </div>
+            <div class="card bot-card">
+              <div class="card-header" role="tab" id="headingFour">
+                <h6 class="mb-0">
+                  Make Whitelist 
+                  <a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="" aria-controls="collapseFour">
+                    <i class="icon-arrow-down"></i>		
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
+                <div class="card-block">
+                  Whether or not to make a whitelist of all the users you currently follow. If checked, we will <strong>OVERWRITE</strong> your old whitelist or create a new one with all the users you currently follow. <strong><i>Check with caution</i></strong>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="text-nowrap">Instagram Password</label>
-          {% for error in form.insta_password.errors %}
-            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
-          {% endfor %}
-          {{ form.insta_password(class_="form-control") }}
+        <div class="col-md-3 offset-md-2 text-center">
+          <h1 class="">Edit Whitelist</h1>
+          <form action="" method="post" name="add_whitelist"> 
+              {{ form.hidden_tag() }}
+              <div class="form-group">
+                <label class="text-nowrap">Instagram Username</label>
+                {% for error in form.insta_username.errors %}
+                  <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
+                {% endfor %}
+                {{ form.insta_username(class_="form-control") }}
+              </div>
+              <div class="form-group">
+                <label class="text-nowrap">Instagram Password</label>
+                {% for error in form.insta_password.errors %}
+                  <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
+                {% endfor %}
+                {{ form.insta_password(class_="form-control") }}
+              </div>
+              <div class="form-group">
+                <label>Add Users</label>
+                {% for error in form.users.errors %}
+                  <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
+                {% endfor %}
+                <br>
+                {{ form.users(data_role="tagsinput", class_="form-control") }}
+              </div>
+              <div class="form-group">
+                <label>Make Whitelist</label>
+                {{ form.make(class_="form-control") }}
+              </div>
+            <input type="submit" value="Submit" class="btn btn-dark">
+          </form>
         </div>
-        <div class="form-group">
-          <label>Users to Add</label>
-          {% for error in form.users.errors %}
-            <div class="error-msg text-nowrap"><strong>{{ error }}</strong></div>
-          {% endfor %}
-          <br>
-          {{ form.users(data_role="tagsinput", class_="form-control") }}
-        </div>
-        <div class="form-group">
-          <label>Make Whitelist</label>
-          {{ form.make(class_="form-control") }}
-        </div>
-      <input type="submit" value="Submit" class="btn btn-dark">
-    </form>
-  </div>
   </header>
 {% endblock %}

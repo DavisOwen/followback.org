@@ -1,27 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% for error in form.insta_username.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  {% for error in form.insta_password.errors %}
-    <div class="alert alert-danger" role="alert">{{ error }}</div>
-  {% endfor %}
-  <div class="text-nowrap col-md-4 offset-md-4 card text-center">
-    <div class="card-header"><h1 class="col-md-4 offset-md-4">Register</h1></div>
-    <div class="card-block">
-    <form action="" method="post" name="register" class="col-md-4 offset-md-4">
+<header class="masthead">
+  <div class="h-100 form-div">
+    <div class="row">
+      <div style="padding-top:87px;" class="col-md-3 offset-md-2">
+				<div id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingOne">
+							<h6 class="mb-0">
+								Instagram Username
+								<a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="" aria-controls="collapseOne">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+							<div class="card-block">
+                Your Instagram Username. We need you to log in to your Instragram account before using our bots. This is to register you as the owner of this account and set up basic settings.
+							</div>
+						</div>
+					</div>
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingTwo">
+							<h6 class="mb-0">
+								Instagram Password
+								<a class="collapsed text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+							<div class="card-block">
+								Your Instagram Password. Note we ask you to enter your password every time we interact with your Instagram Account. This is for your security, so we do not have to store your password on our servers. We need you to log in to your Instragram account to register you as the owner of this account and set up basic settings.
+							</div>
+						</div>
+					</div>
+        </div>
+      </div>
+  <div class="col-md-3 offset-md-2 text-center">
+    <h1 class="">Register</h1>
+    <form action="" method="post" name="register_insta" class="">
         {{ form.hidden_tag() }}
         <div class="form-group">
-          <label>Username</label>
-            {{ form.insta_username(class_="form-control") }}
+          <label>Instagram Username</label>
+          {% for error in form.insta_username.errors %}
+            <div class="error-msg text-nowrap" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
+          {{ form.insta_username(class_="form-control") }}
         </div>
         <div class="form-group">
-          <label>Password</label>
+          <label>Instagram Password</label>
+          {% for error in form.insta_password.errors %}
+            <div class="error-msg text-nowrap" role="alert"><strong>{{ error }}</strong></div>
+          {% endfor %}
           {{ form.insta_password(class_="form-control") }}
         </div>
         <input type="submit" value="Register" class="btn btn-dark">
     </form>
     </div>
   </div>
+  </div>
+  </div>
+</header>
 {% endblock %}

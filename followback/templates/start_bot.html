@@ -2,52 +2,149 @@
 
 {% block content %}
   <header class="masthead">
-  <div class="col-md-4 offset-md-4 text-center h-100 form-div">
-    <h1 class="text-nowrap">FollowBack Bot</h1>
-    <form action="" method="post" name="login">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-          <label>Instagram Username</label>
-          {% for error in form.insta_username.errors %}
-            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
-          {% endfor %}
-          {{ form.insta_username(class_="form-control") }}
-        </div>
-        <div class="form-group">
-          <label>Instagram Password</label>
-          {% for error in form.insta_password.errors %}
-            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
-          {% endfor %}
-          {{ form.insta_password(class_="form-control") }}
-        </div>
-        <div class="form-group">
-          <label>Pages</label>
-          {% for error in form.pages.errors %}
-            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
-          {% endfor %}
-          <br>
-          {{ form.pages(data_role="tagsinput", class_="form-control") }}
-        </div>
-        <div class="form-group">
-          <label>Likes Per Day</label>
-          {% for error in form.likes_per_day.errors %}
-            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
-          {% endfor %}
-          {{ form.likes_per_day(class_="form-control") }}
-        </div>
-        <div class="form-group">
-          <label>Follows Per Day</label>
-          {% for error in form.follows_per_day.errors %}
-            <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
-          {% endfor %}
-          {{ form.follows_per_day(class_="form-control") }}
-        </div>
-        <div class="form-check">
-          <label>Use Whitelist</label>
-          {{ form.use_whitelist(class_="form-control") }}
-        </div>
-      <input type="submit" value="Start Bot" class="btn btn-dark">
-    </form>
+  <div class="h-100 form-div">
+    <div class="row">
+      <div style="padding-top:87px;" class="col-md-3 offset-md-2">
+				<div id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingOne">
+							<h6 class="mb-0">
+								Instagram Username
+								<a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="" aria-controls="collapseOne">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+							<div class="card-block">
+								Your Instagram Username. Select from a list of your registered accounts. Since we are in alpha stage right now, you can only register one account. 
+							</div>
+						</div>
+					</div>
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingTwo">
+							<h6 class="mb-0">
+								Instagram Password
+								<a class="collapsed text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+							<div class="card-block">
+								Your Instagram Password. Note we ask you to enter your password every time we interact with your Instagram Account. This is for your security, so we do not have to store your password on our servers.
+							</div>
+						</div>
+					</div>
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingThree">
+							<h6 class="mb-0">
+								Pages
+								<a class="collapsed text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6> </div>
+						<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+							<div class="card-block">
+								The pages that fit your niche. For example, if you are an up and coming pop singer, you should use taylorswift! We recommend pages with large amounts of followers. Type a page and hit enter. You can enter as many pages as you want. Make sure they are spelled correctly so we use the correct pages.
+							</div>
+						</div>
+					</div>
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingFour">
+							<h6 class="mb-0">
+								Likes Per Day
+								<a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="" aria-controls="collapseFour">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
+							<div class="card-block">
+								Maximum number of photos to like per day. We generally recommend 1.5 times the amount of follows per day. For example, if you want to follow 500 users per day, you should use 750 likes per day. These numbers have been tested by many users of FollowBack and are generally safe.
+							</div>
+						</div>
+					</div>
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingFive">
+							<h6 class="mb-0">
+								Follows Per Day
+								<a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="" aria-controls="collapseFive">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive">
+							<div class="card-block">
+								Maximum number of users to follow per day. The magic number here is 800. This is the optimal number to follow the most people while avoiding being banned. However, for new accounts, or if this is the first time running a bot, you should start with 400. Also, the more frequently you upload photos the more you can follow and like. Once you have started a bot, you can increase the follows per day (and corresponding likes per day) by 50 users every 2 weeks. This is convservative, and you can choose to stop the bot and increase follows per day at any point you like. 
+							</div>
+						</div>
+					</div>
+					<div class="card bot-card">
+						<div class="card-header" role="tab" id="headingSix">
+							<h6 class="mb-0">
+								Use Whitelist
+								<a class="text-white float-right" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="" aria-controls="collapseSix">
+									<i class="icon-arrow-down"></i>		
+								</a>
+							</h6>
+						</div>
+						<div id="collapseSix" class="collapse" role="tabpanel" aria-labelledby="headingSix">
+							<div class="card-block">
+								Whether or not to use your whitelist. If checked, we will not unfollow any users on your whitelist. If unchecked, we will unfollow everyone indiscriminately. We recommend you keep it checked. <strong><i>Uncheck with caution</i></strong>
+							</div>
+						</div>
+					</div>
+				</div>
+      </div>
+      <div class="col-md-3 offset-md-2 text-center">
+        <h1 class="">FollowBack Bot</h1>
+        <form action="" method="post" name="followback_bot">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+              <label>Instagram Username</label>
+              {% for error in form.insta_username.errors %}
+                <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+              {% endfor %}
+              {{ form.insta_username(class_="form-control") }}
+            </div>
+            <div class="form-group">
+              <label>Instagram Password</label>
+              {% for error in form.insta_password.errors %}
+                <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+              {% endfor %}
+              {{ form.insta_password(class_="form-control") }}
+            </div>
+            <div class="form-group">
+              <label>Pages</label>
+              {% for error in form.pages.errors %}
+                <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+              {% endfor %}
+              <br>
+              {{ form.pages(data_role="tagsinput", class_="form-control") }}
+            </div>
+            <div class="form-group">
+              <label>Likes Per Day</label>
+              {% for error in form.likes_per_day.errors %}
+                <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+              {% endfor %}
+              {{ form.likes_per_day(data_toggle="tooltip", data_placement="right", title="Recommended 600 for new users, maximum 1200", class_="form-control") }}
+            </div>
+            <div class="form-group">
+              <label>Follows Per Day</label>
+              {% for error in form.follows_per_day.errors %}
+                <div class="error-msg text-nowrap" role="alert">{{ error }}</div>
+              {% endfor %}
+              {{ form.follows_per_day(data_toggle="tooltip", data_placement="right", title="Recommended 400 for new users, maximum 800", class_="form-control") }}
+            </div>
+            <div class="form-check">
+              <label>Use Whitelist</label>
+              {{ form.use_whitelist(class_="form-control") }}
+            </div>
+          <input type="submit" value="Submit" class="btn btn-dark">
+        </form>
+      </div>
+    </div>
   </div>
   </header>
 {% endblock %}

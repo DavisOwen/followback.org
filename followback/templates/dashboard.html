@@ -2,24 +2,65 @@
 
 {% block content %}
 <header class="masthead"> 
-  <div class="col-md-2 offset-md-5 text-center h-100">
-  <div>Registered accounts</div>
-  {% if g.user.insta_users %}
-    {% for user in g.user.insta_users %}
-      {{ user.username }}
-        <a href="{{ url_for('start_bot',username=g.user.username, insta_user=user.username) }}" role="button">Start Bot</a>
-        <a href="{{ url_for('unfollowbot',username=g.user.username, insta_user=user.username) }}" role="button">Unfollow Bot</a>
-        <a href="{{ url_for('add_whitelist',username=g.user.username, insta_user=user.username) }}" role="button">Add Users to Whitelist</a>
-      {% if user.bot_id %}
-        <a href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">Bot status</a>
-      {% else %}
-        No bots started yet!
-      {% endif %}
-    {% endfor %}
-  {% else %}
-    No accounts registered! 
-    <a href="{{ url_for('register_insta',username=g.user.username) }}">Register here</a>
-  {% endif %}
+  <div class="h-100 form-div">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card bot-card">
+          <div class="card-header">
+            <h4 class="text-center">FollowBack Bot</h4>
+          </div>
+          <div class="card-block">
+            <p class="card-text">Automatically likes and follows users. Specify which pages best fit your niche and we will find the users to like and follow. Specify maximum number of users to follow and like per day. Unfollows all users not on whitelist at the end of the day. The bot will pause between liking and following users to avoid spammy behavior which will get you banned. Cannot run at asame time as Unfollow Bot</p>
+            <p style="font-size:small;" class="card-text text-warning"><i>Warning: While FollowBack allows you to follow and like as many people per day as you want, we strongly recommend you do not exceed 800 follows per day and 1200 likes per day. Past this point, you are at risk of getting temporarily banned by Instagram. Start at 400 follows per day and 600 likes per day, then increase by 50 follows per day and 25 likes per day every 2 weeks.</i> </p>
+            <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('start_bot',username=g.user.username) }}" role="button">Start</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bot-card">
+          <div class="card-header">
+            <h4 class="text-center">Unfollow Bot</h4>
+          </div>
+          <div class="card-block">
+            <p class="card-text">Utility for unfollowing all users not on your whitelist. Specify how many users to unfollow per day. Cannot run at the same time as FollowBack Bot</p>
+            <p style="font-size:small;" class="card-text text-warning"><i>Warning: While FollowBack allows you to unfollow as many people per day as you want, we strongly recommend you do not exceed 800 unfollows per day. Past this point, you are at risk of getting temporarily banned by Instagram. We recommend you use the same amount of unfollows per day as follows per day in the FollowBack Bot.</i></p>
+            <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('unfollowbot',username=g.user.username) }}" role="button">Start</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bot-card">
+          <div class="card-header">
+            <h4 class="text-center">Edit Whitelist</h4>
+          </div>
+          <div class="card-block">
+            <p class="card-text">Add users to your whitelist. You can manually specify certain users to add to your whitelist. Use this option if you are manually following users while FollowBack Bot is running and do not want FollowBack to unfollow these users. You can also create a whitelist based on all the users you are currently following (recommended for new users).</p>
+            <p style="font-size:small;" class="card-text text-warning"><i>Warning: Creating a whitelist from all users you are currently following will overwrite your previous whitelist. Use with caution.</i></p>
+            <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('add_whitelist',username=g.user.username) }}" role="button">Start</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if g.user.insta_users %}
+      {% for user in g.user.insta_users %}
+        <h3 class="text-center">{{ user.username }}</h3>
+        <hr>
+        <h5 class="text-center">Did you change your Instagram username?<h5>
+          <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('register_insta',username=g.user.username) }}">Register Again</a>
+        <hr>
+        <h5 class="text-center">Running Bots</h5>
+        <hr>
+        {% if user.bot_id %}
+          <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">Status</a>
+        {% else %}
+          <p class="text-center">None<p>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <h3 class="text-center">No Instagram Accounts Registered</h3>
+      <h6 class="text-center">You need to register your Instagram account before using our bots</h6>
+      <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('register_insta',username=g.user.username) }}">Register</a>
+    {% endif %}
   </div>
 </header>
 {% endblock %}

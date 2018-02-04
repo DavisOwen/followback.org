@@ -56,7 +56,7 @@ def check_payment(insta_user):
     elif user.confirmed:
         stop_date = user.datetime_created + datetime.timedelta(days=7)
     if datetime.date.today() > stop_date:
-        user.role = "User"
+        user.purchased = False
         db.session.add(user)
         db.session.commit()
         raise NoPayment
@@ -356,20 +356,20 @@ class InstagramBot:
                     addMaxID(page,'')
                 return True
             else:
-                logger.error("Returned %s. Could not get %s's followers" % (req.status_code,page))
-                logger.error(req.text)
+                logger.warning("Returned %s. Could not get %s's followers" % (req.status_code,page))
+                logger.warning(req.text)
                 try:
-                    logger.error(req.json())
+                    logger.warning(req.json())
                 except:
                     pass
                 self.errors += 1
                 time.sleep(5)
                 return False
         else:
-            logger.error("Returned %s. Could not find user %s, retrying" % (req.status_code,page))
-            logger.error(req.text)
+            logger.warning("Returned %s. Could not find user %s, retrying" % (req.status_code,page))
+            logger.warning(req.text)
             try:
-                logger.error(req.json())
+                logger.warning(req.json())
             except:
                 pass
             self.errors += 1
@@ -396,12 +396,12 @@ class InstagramBot:
                     self.likes += 1
                     self.like_iter += 1
                 else:
-                    logger.error("Like request returned %s for user %s. Trying next user" %
+                    logger.warning("Like request returned %s for user %s. Trying next user" %
                                     req.status_code,self.user_followers['users']
                                     [self.like_iter]['username'])
-                    logger.error(req.text)
+                    logger.warning(req.text)
                     try:
-                        logger.error(req.json())
+                        logger.warning(req.json())
                     except:
                         pass
                     self.errors += 1
@@ -410,11 +410,11 @@ class InstagramBot:
             else:
                 self.like_iter += 1
         else:
-            logger.error("Could not get %s\'s feed. Trying next user" %
+            logger.warning("Could not get %s\'s feed. Trying next user" %
                             self.user_followers['users'][self.like_iter]['username'])
-            logger.error(req.text)
+            logger.warning(req.text)
             try:
-                logger.error(req.json())
+                logger.warning(req.json())
             except:
                 pass
             self.errors += 1
@@ -441,11 +441,11 @@ class InstagramBot:
                 self.follows += 1
                 self.follow_iter += 1
             else:
-                logger.error("Follow request for %s returned %s. Trying next user" %
+                logger.warning("Follow request for %s returned %s. Trying next user" %
                                 (self.user_followers['users'][self.follow_iter]['username'],req.status_code))
-                logger.error(req.text)
+                logger.warning(req.text)
                 try:
-                    logger.error(req.json())
+                    logger.warning(req.json())
                 except:
                     pass
                 self.errors += 1
@@ -474,10 +474,10 @@ class InstagramBot:
                                             "end_time":0})
                     time.sleep(28800/self.follows_per_day)
                 else:
-                    logger.error("Unfollowed %s failed, trying next user" % (user))
-                    logger.error(req.text)
+                    logger.warning("Unfollowed %s failed, trying next user" % (user))
+                    logger.warning(req.text)
                     try:
-                        logger.error(req.json())
+                        logger.warning(req.json())
                     except:
                         pass
                     self.errors += 1

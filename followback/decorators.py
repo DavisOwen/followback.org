@@ -10,15 +10,16 @@ def async(f):
         thr.start()
     return wrapper
 
-def login_required(role="ANY",confirmed=True):
+def login_required(plan="ANY",confirmed=True,purchased=False):
     def wrapper(fn):
         @wraps(fn)
         def decorated_view(*args, **kwargs):
             if not g.user.is_authenticated:
                 return lm.unauthorized()
-            urole = g.user.get_role()
+            uplan = g.user.get_plan()
             uconfirmed = g.user.get_confirmed()
-            if role == "Customer" and (urole != role):
+            upurchased = g.user.get_purchased()
+            if purchased and (upurchased != purchased):
                 flash("This is a paid feature","warning")
                 return redirect(url_for('purchase',username=g.user.username))
             elif confirmed and (uconfirmed != confirmed):

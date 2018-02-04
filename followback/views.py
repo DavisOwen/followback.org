@@ -23,7 +23,7 @@ def index():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data,email=form.email.data,confirmed=False,role="User") 
+        user = User(username=form.username.data,email=form.email.data,confirmed=False) 
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -130,9 +130,8 @@ def reset_password(token):
 
 @app.route('/confirm/<token>')
 def confirm_email(token):
-    try:
-        email = confirm_token(token)
-    except:
+    email = confirm_token(token)
+    if not email:
         flash('The confirmation link is invalid or has expired.', 'danger')
         return redirect(url_for('index'))
     user = User.query.filter_by(email=email).first()
@@ -140,6 +139,8 @@ def confirm_email(token):
         flash('Account already confirmed. Please login.', 'success')
     else:
         user.confirmed = True
+        user.plan = "Trial"
+        user.purchased = True
         user.datetime_created = date.today()
         db.session.add(user)
         db.session.commit()
@@ -179,7 +180,7 @@ def before_request():
             stop_date += timedelta(days=1)
             g.stop_date = stop_date
             if date.today() > stop_date:
-                g.user.role="User"
+                g.user.purchased=False
                 db.session.add(g.user)
                 db.session.commit()
         elif g.user.confirmed:
@@ -187,7 +188,7 @@ def before_request():
             stop_date = created_date + timedelta(days=7)
             g.stop_date = stop_date
             if date.today() > stop_date:
-                g.user.role="User"
+                g.user.purchased=False
                 db.session.add(g.user)
                 db.session.commit()
 
@@ -227,7 +228,7 @@ def ipn():
             user = User.query.filter_by(username=username).first()
             if txn_type == 'subscr_payment':
                 if float(payment_gross) < 5:
-                    user.role = "User"
+                    user.purchased = False
                     raise NotFullPayment
             
                 payment = PaypalTransaction(payer_email=payer_email,
@@ -239,7 +240,8 @@ def ipn():
                                         payment_status=payment_status,
                                         txn_id=txn_id,
                                         subscr_id = subscr_id)
-                user.role = "Customer"
+                user.purchased = True
+                user.plan = "Classic"
                 user.paypal_transactions.append(payment)
                 db.session.add(user)
                 db.session.commit()
@@ -263,6 +265,8 @@ def success(username):
 def bot_status(username,bot_id):
     start_time = str()
     stopped = False
+    insta_user = InstaUser.query.filter_by(bot_id=bot_id).first()
+    insta_username = insta_user.username
     if request.method=='POST':
         celery.control.revoke(bot_id, terminate=True, signal='SIGINT')    
     status = instabot.AsyncResult(bot_id)
@@ -288,7 +292,8 @@ def bot_status(username,bot_id):
     return render_template('bot_status.html',
                             status=status,
                             bot_id=bot_id,
-                            start_time=start_time
+                            start_time=start_time,
+                            insta_username=insta_username
                             )
 
 @app.route('/<username>/dashboard')
@@ -346,7 +351,7 @@ def instabot(self,**kwargs):
         return result
 
 @app.route('/<username>/checkpoint',methods=['GET','POST'])
-@login_required(role='Customer')
+@login_required(purchased=True)
 def checkpoint(username):
     form = CheckpointForm()
     response = session['response']
@@ -399,7 +404,7 @@ def checkpoint(username):
                             )
 
 @app.route('/<username>/start_bot',methods=['GET','POST'])
-@login_required(role='Customer')
+@login_required(purchased=True)
 def start_bot(username):
     insta_user_list = [ (x.username,x.username) for x in g.user.insta_users]
     form = BotForm(insta_user_list)
@@ -474,7 +479,7 @@ def start_bot(username):
                             )
 
 @app.route('/<username>/unfollowbot',methods=['GET','POST'])
-@login_required(role='Customer')
+@login_required(purchased=True)
 def unfollowbot(username):
     insta_user_list = [ (x.username,x.username) for x in g.user.insta_users]
     form = UnfollowForm(insta_user_list)
@@ -558,7 +563,7 @@ def unfollowbot(username):
                             )
 
 @app.route('/<username>/add_whitelist',methods=['GET','POST'])
-@login_required(role="Customer")
+@login_required(purchased=True)
 def add_whitelist(username):
     insta_user_list = [ (x.username,x.username) for x in g.user.insta_users]
     form = AddWhitelistForm(insta_user_list)
@@ -608,7 +613,7 @@ def add_whitelist(username):
                             form=form)
 
 @app.route('/<username>/register_insta',methods=['GET','POST'])
-@login_required(role="Customer")
+@login_required(purchased=True)
 def register_insta(username):
     form = RegisterInstaForm()
     if form.validate_on_submit():

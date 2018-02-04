@@ -41,26 +41,29 @@
         </div>
       </div>
     </div>
+    <div class="col-md-4 offset-md-4">
     {% if g.user.insta_users %}
       {% for user in g.user.insta_users %}
         <h3 class="text-center">{{ user.username }}</h3>
         <hr>
-        <h5 class="text-center">Did you change your Instagram username?<h5>
-          <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('register_insta',username=g.user.username) }}">Register Again</a>
-        <hr>
-        <h5 class="text-center">Running Bots</h5>
-        <hr>
+        <h5 class="text-center">Bot Status</h5>
         {% if user.bot_id %}
-          <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">Status</a>
+          <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('bot_status',username=g.user.username, bot_id=user.bot_id) }}">Go</a>
+          <hr>
         {% else %}
           <p class="text-center">None<p>
         {% endif %}
+
+        <h5 class="text-center">Did you change your Instagram username?<h5>
+          <a class="btn btn-dark col-md-8 offset-md-2" href="{{ url_for('register_insta',username=g.user.username) }}">Register Again</a>
+        <hr>
       {% endfor %}
     {% else %}
       <h3 class="text-center">No Instagram Accounts Registered</h3>
       <h6 class="text-center">You need to register your Instagram account before using our bots</h6>
       <a class="btn btn-dark col-md-4 offset-md-4" href="{{ url_for('register_insta',username=g.user.username) }}">Register</a>
     {% endif %}
+    </div>
   </div>
 </header>
 {% endblock %}

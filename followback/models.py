@@ -11,7 +11,8 @@ class User(db.Model):
     datetime_created = db.Column(db.DateTime)
     insta_users = db.relationship('InstaUser')
     paypal_transactions = db.relationship('PaypalTransaction')
-    role = db.Column(db.String(30))
+    plan = db.Column(db.String(30))
+    purchased = db.Column(db.SmallInteger, default=False)
 
     @property
     def is_authenticated(self):
@@ -34,11 +35,14 @@ class User(db.Model):
     def check_password(self,password):
         return check_password_hash(self.password,password)
 
-    def get_role(self):
-        return self.role
+    def get_plan(self):
+        return self.plan
 
     def get_confirmed(self):
         return self.confirmed
+
+    def get_purchased(self):
+        return self.purchased
 
     def __repr__(self):
         return '<User %r>' % (self.username)

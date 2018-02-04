@@ -2,35 +2,100 @@
 
 {% block content %}
   <header class="masthead">
-  <div>Bot Status</div>
-    {% if status.state == "PROGRESS" %}
-      {% if status.info.get('type','N/A') == "bot" %}
-        <div>Running</div>
-        <div>{{ status.info.get('likes','N/A') }}</div>
-        <div>{{ status.info.get('follows','N/A') }}</div>
-      {% elif status.info.get('type','N/A') == "unfollow" %}
-        <div>Running</div>
-        <div>{{ status.info.get('unfollows','N/A') }}</div>
-      {% endif %}
-      <div>{{ start_time }} </div>
-    {% elif status.state == "SUCCESS" %}
-      <div>{{ status.result.get('state','N/A') }}</div>
-      {% if status.result.get('type','N/A') == "bot" %}
-        <div>{{ status.result.get('likes','N/A') }}</div>
-        <div>{{ status.result.get('follows','N/A') }}</div>
-      {% elif status.result.get('type','N/A') == "unfollow" %}
-        <div>{{ status.result.get('unfollows','N/A') }}</div>
-      {% endif %}
-      <div>{{ status.result.get('start_time','N/A') }}</div>
-      <div>{{ status.result.get('end_time','N/A') }}</div>
-      <div>{{ status.result.get('run_time','N/A') }}</div>
-    {% elif status.state == "PENDING" %}
-      <div>Submitting...</div>
-    {% endif %}
-    {% if status.state == "PROGRESS" %}
-      <form action="" method="post">
-        <input type="submit" value="Stop Bot">
-      </form>
-    {% endif %}
+    <div class="col-md-4 offset-md-4 h-100 text-center form-div">
+      <table class="table table-dark text-white">
+        <thead>
+          <tr>
+            <th colspan="2" class="text-center text-nowrap">Bot Information</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if status.state == "PROGRESS" %}
+            <tr>
+              <th scope="row">Status</th>
+              <td>Running</td>
+            </tr>
+            <tr>
+              <th scope="row">Username</th>
+              <td>{{ insta_username }}</td>
+            </tr>
+            {% if status.info.get('type','N/A') == "bot" %}
+              <tr>
+                <th scope="row">Likes</th>
+                <td>{{ status.info.get('likes','N/A') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Follows</th>
+                <td>{{ status.info.get('follows','N/A') }}</td>
+              </tr>
+            {% elif status.info.get('type','N/A') == "unfollow" %}
+              <tr>
+                <th scope="row">Unfollows</th>
+                <td>{{ status.info.get('unfollows','N/A') }}</td>
+              </tr>
+            {% endif %}
+              <tr>
+                <th scope="row">Start Time</th>
+                <td>{{ start_time }}</td>
+              </tr>
+          {% elif status.state == "SUCCESS" %}
+            <tr>
+              <th scope="row">Status</th>
+              <td>{{ status.result.get('state','N/A') }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Username</th>
+              <td>{{ insta_username }}</td>
+            </tr>
+            {% if status.result.get('type','N/A') == "bot" %}
+            <tr>
+              <th scope="row">Likes</th>
+              <td>{{ status.result.get('likes','N/A') }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Follows</th>
+              <td>{{ status.result.get('follows','N/A') }}</td>
+            </tr>
+            {% elif status.result.get('type','N/A') == "unfollow" %}
+            <tr>
+              <th scope="row">Unfollows</th>
+              <td>{{ status.result.get('unfollows','N/A') }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Start Time</th>
+              <td>{{ status.result.get('start_time','N/A') }}</td>
+            </tr>
+            <tr>
+              <th scope="row">End Time</th>
+              <td>{{ status.result.get('end_time','N/A') }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Run Time</th>
+              <td>{{ status.result.get('run_time','N/A') }}</td>
+            </tr>
+          {% elif status.state == "PENDING" %}
+            <tr>
+              <th scope="row">Status</th>
+              <td>Submitting...</td>
+            </tr>
+            <tr>
+              <th scope="row">Username</th>
+              <td>{{ insta_username }}</td>
+            </tr>
+          {% elif status.state =="REVOKED" %}
+            <tr>
+              <th scope="row">Status</th>
+              <td>Revoked; Please refresh</td>
+            </tr>
+          {% endif %}
+        </tbody>
+        </table>
+        {% if status.state == "PROGRESS" %}
+          <form action="" method="post">
+            <input class="btn btn-danger" type="submit" value="Stop Bot">
+          </form>
+        {% endif %}
+    </div>
   </header>
 {% endblock %}

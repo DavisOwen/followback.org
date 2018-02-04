@@ -13,8 +13,10 @@
       <tr>
         <th scope="row">Email</th> 
         <td class="">{{ g.user.email }}
-          <br>
-          Unconfirmed
+          {% if not g.user.confirmed %}
+            <br>
+            UNCONFIRMED
+          {% endif %}
         </td>
       </tr>
       <tr>
@@ -24,8 +26,8 @@
       <tr class="">
         <th scope="row">Payment plan</th>
         <td class="">
-        {% if g.user.role == "Customer" %}
-        Classic</td>
+        {% if g.user.purchased %}
+        {{ g.user.plan }} </td>
         <tr>
           <th scope="row">Renewal Date</th>
           <td class="">{{ g.stop_date }}</td>
@@ -42,7 +44,7 @@
   <a class="btn btn-dark" href="{{url_for('change_username',username=g.user.username) }}">Change Username</a>
   <a class="btn btn-dark" href="{{url_for('change_password',username=g.user.username) }}">Change Password</a>
   </div>
-  {% if g.user.confirmed == False %}
+  {% if not g.user.confirmed %}
     <div class="col-md-10 offset-md-1 form-div">
       <h5>Email Unconfirmed</h5>
       <hr>

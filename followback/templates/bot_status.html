@@ -28,10 +28,26 @@
                 <th scope="row">Follows</th>
                 <td>{{ status.info.get('follows','N/A') }}</td>
               </tr>
+              <tr>
+                <th scope="row">Initial Followers</th>
+                <td>{{ status.info.get('initial_followers','N/A') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Current Followers</th>
+                <td>{{ status.info.get('followers_count','N/A') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Current Followings</th>
+                <td>{{ status.info.get('following_count','N/A') }}</td>
+              </tr>
             {% elif status.info.get('type','N/A') == "unfollow" %}
               <tr>
                 <th scope="row">Unfollows</th>
                 <td>{{ status.info.get('unfollows','N/A') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Current Followings</th>
+                <td>{{ status.info.get('followings','N/A') }}</td>
               </tr>
             {% endif %}
               <tr>
@@ -56,11 +72,28 @@
               <th scope="row">Follows</th>
               <td>{{ status.result.get('follows','N/A') }}</td>
             </tr>
+            <tr>
+              <th scope="row">Initial Followers</th>
+              <td>{{ status.result.get('initial_followers','N/A') }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Final Followers</th>
+              <td>{{ status.result.get('followers_count','N/A') }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Final Followings</th>
+              <td>{{ status.result.get('following_count','N/A') }}</td>
+            </tr>
             {% elif status.result.get('type','N/A') == "unfollow" %}
             <tr>
               <th scope="row">Unfollows</th>
               <td>{{ status.result.get('unfollows','N/A') }}</td>
             </tr>
+            <tr>
+              <th scope="row">Final Followings</th>
+              <td>{{ status.result.get('followings','N/A') }}</td>
+            </tr>
+
             {% endif %}
             <tr>
               <th scope="row">Start Time</th>

@@ -174,4 +174,3 @@ class Poster:
             return unfollow
         else:
             raise NotLoggedIn()
-    

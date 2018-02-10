@@ -322,10 +322,15 @@ def instabot(self,**kwargs):
             celery_logger.error("Getter login failed")
             return result
         start_time = datetime.utcnow()
+        followers_count = bot.get_followers()
+        following_count = bot.get_followings()
         self.update_state(state="PROGRESS",
                             meta={"type":"bot",
                                 "likes":0,
                                 "follows":0,
+                                "initial_followers":followers_count,
+                                "followers_count":followers_count,
+                                "following_count":following_count,
                                 "start_time":start_time,
                                 "end_time":0})
         result = bot.loop(self,start_time)
@@ -342,9 +347,11 @@ def instabot(self,**kwargs):
             celery_logger.error("Getter login failed")
             return result
         start_time = datetime.utcnow()
+        followings = bot.get_followings()
         self.update_state(state="PROGRESS",
                         meta={"type":"unfollow",
                             "unfollows":0,
+                            "followings":followings,
                             "start_time":start_time,
                             "end_time":0})
         result = bot.unfollow(state=self,start_time=start_time)
@@ -518,18 +525,6 @@ def unfollowbot(username):
         headers = dict(headers)
         if status == 0:
             kwargs = {'args':args,'cookies':cookies,'headers':headers,'function':'unfollow'}
-            if form.new_user.data:
-                insta_user = InstaUser(username=form.insta_username.data,pk=form.pk.data)
-                g.user.insta_users.append(insta_user)
-                db.session.add(g.user)
-                db.session.commit()
-            else:
-                insta_user = InstaUser.query.filter_by(username=args['username']).first()
-                if insta_user is None:
-                   insta_user = InstaUser.query.filter_by(pk=form.pk.data).first()
-                   insta_user.username=form.insta_username.data
-                   db.session.add(insta_user)
-                   db.session.commit()
             bot_instance = instabot.delay(**kwargs)
             insta_user.bot_id = bot_instance.id
             db.session.add(insta_user)
@@ -547,8 +542,7 @@ def unfollowbot(username):
             session['cookies'] = cookies
             session['headers'] = headers
             session['response'] = response
-            session['new_user'] = form.new_user.data
-            session['pk'] = form.pk.data
+            session['pk'] = pk
             session['function'] = 'unfollow'
             return redirect(url_for('checkpoint',
                                     username=username,
@@ -635,12 +629,15 @@ def register_insta(username):
                     flash("Name change successful",'success')
                     return redirect(url_for('dashboard',username=g.user.username))
             else:
-                insta_user = InstaUser(username=form.insta_username.data,pk=pk)
-                g.user.insta_users.append(insta_user)
-                db.session.add(g.user)
-                db.session.commit()
-                flash("Registration successful",'success')
-                return redirect(url_for('dashboard',username=g.user.username))
+                if len(g.user.insta_users) > 0:
+                    flash('You can only register one account with the Classic payment plan','danger')
+                else:
+                    insta_user = InstaUser(username=form.insta_username.data,pk=pk)
+                    g.user.insta_users.append(insta_user)
+                    db.session.add(g.user)
+                    db.session.commit()
+                    flash("Registration successful",'success')
+                    return redirect(url_for('dashboard',username=g.user.username))
         else:
             flash("Error logging in with these credentials", 'danger')
     return render_template('register_insta.html',

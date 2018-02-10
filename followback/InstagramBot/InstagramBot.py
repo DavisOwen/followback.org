@@ -6,6 +6,7 @@ from followback import db
 from followback.models import User, InstaUser, Followed, MaxID
 from followback.views import celery_logger as logger
 import time
+import requests
 import datetime
 import random
 import os
@@ -63,6 +64,13 @@ def check_payment(insta_user):
 
 class InstagramBot:
 
+    user_followers = list()
+    page_iter = -1
+    errors = 0
+    follow_iter = like_iter = 0
+    unfollowing = False
+    url_info = "https://www.instagram.com/%s/?__a=1"
+
     def __init__(self,args):
         self.username = args['username']
         self.password = args['password']
@@ -77,11 +85,8 @@ class InstagramBot:
         upload_file = args.get('upload_file',None)
         self.like_wait = (1.0/float(likes_per_day/57600.0))
         self.follow_wait = (1.0/float(self.follows_per_day/57600.0))
-        self.user_followers = list()
-        self.page_iter = -1
-        self.errors = 0
-        self.follow_iter = self.like_iter = 0
-        self.unfollowing = False
+        self.initial_followers_count = self.get_followers()
+        self.following_count= self.get_followings()
         if self.uploads_per_day is not None:
             self.upload_setup(self.uploads_per_day,uploadFile,\
                             scrape_user,caption,pic_path)
@@ -191,6 +196,25 @@ class InstagramBot:
             whitelist = list()
         return whitelist
 
+    def get_followers(self):
+        '''
+        Get the total amount of people following you
+        '''
+        req = requests.get(self.url_info % (self.username))
+        json = req.json()
+        followed = json['user']['followed_by']['count']
+        return followed
+
+    def get_followings(self):
+        '''
+        Get the total amount of people you follow
+        '''
+        req = requests.get(self.url_info % (self.username))
+        json = req.json()
+        following = json['user']['follows']['count']
+        return following
+
+
     def upload_setup(self):
         '''Creates variables needed for upload'''
         self.upload_wait = 1.0/float(self.uploads_per_day/57600.0)
@@ -266,10 +290,15 @@ class InstagramBot:
                         if (time.time()-self.last_like) / \
                                 self.like_wait >= 1:
                             self.like()
+                            followers_count = self.get_followers()
+                            following_count = self.get_followings()
                             state.update_state(state="PROGRESS",
                                         meta={"type":"bot",
                                             "likes":self.likes,
                                             "follows":self.follows,
+                                            "initial_followers":self.initial_followers_count,
+                                            "followers_count":followers_count,
+                                            "following_count":following_count,
                                             "start_time":start_time,
                                             "end_time":0})
 
@@ -277,10 +306,15 @@ class InstagramBot:
                         if (time.time() - self.last_follow) / \
                                 self.follow_wait >= 1:
                             self.follow()
+                            followers_count = self.get_followers()
+                            following_count = self.get_followings()
                             state.update_state(state="PROGRESS",
                                     meta={"type":"bot",
                                         "likes":self.likes,
                                         "follows":self.follows,
+                                        "initial_followers":self.initial_followers_count,
+                                        "followers_count":followers_count,
+                                        "following_count":following_count,
                                         "start_time":start_time,
                                         "end_time":0})
 
@@ -290,20 +324,40 @@ class InstagramBot:
                                 self.upload_wait >=1:
                             self.upload()
             except Exception as e:
+                followers_count = self.get_followers()
+                following_count = self.get_followings()
                 if isinstance(e, BotStop):
-                    results = dict({"state":"STOPPED","type":"bot","likes":self.likes,
-                                "follows":self.follows,"start_time":start_time,
-                                "end_time":datetime.datetime.utcnow()})
+                    results = dict({"state":"STOPPED",
+                                    "type":"bot",
+                                    "likes":self.likes,
+                                    "follows":self.follows,
+                                    "initial_followers":self.initial_followers_count,
+                                    "followers_count":followers_count,
+                                    "following_count":following_count,
+                                    "start_time":start_time,
+                                    "end_time":datetime.datetime.utcnow()})
                 elif isinstance(e, ProbablyBanned):
-                    results = dict({"state":"BANNED","type":"bot","likes":self.likes,
-                                "follows":self.follows,"start_time":start_time,
-                                "end_time":datetime.datetime.utcnow()})
+                    results = dict({"state":"TEMPORARILY BANNED",
+                                    "type":"bot",
+                                    "likes":self.likes,
+                                    "follows":self.follows,
+                                    "initial_followers":self.initial_followers_count,
+                                    "followers_count":followers_count,
+                                    "following_count":following_count,
+                                    "start_time":start_time,
+                                    "end_time":datetime.datetime.utcnow()})
                 else:
                     logger.error(e)
                     logger.error(traceback.format_exc())
-                    results = dict({"state":"ERROR","type":"bot","likes":self.likes,
-                                "follows":self.follows,"start_time":start_time,
-                                "end_time":datetime.datetime.utcnow()})
+                    results = dict({"state":"ERROR",
+                                    "type":"bot",
+                                    "likes":self.likes,
+                                    "follows":self.follows,
+                                    "initial_followers":self.initial_followers_count,
+                                    "followers_count":followers_count,
+                                    "following_count":following_count,
+                                    "start_time":start_time,
+                                    "end_time":datetime.datetime.utcnow()})
                 db.session.add(self.user)
                 db.session.commit()
                 self.getter.logout()
@@ -467,9 +521,11 @@ class InstagramBot:
                     logger.info("Unfollowed %s" % (user))
                     if state:
                         unfollows += 1
+                        followings = self.get_followings()
                         state.update_state(state="PROGRESS",
                                         meta={"type":"unfollow",
                                             "unfollows":unfollows,
+                                            "followings":followings,
                                             "start_time":start_time,
                                             "end_time":0})
                     time.sleep(28800/self.follows_per_day)
@@ -483,8 +539,10 @@ class InstagramBot:
                     self.errors += 1
                     time.sleep(5)
         if state:
+            followings = self.get_followings()
             results = dict({"state":"FINISHED","type":"unfollow",
                                 "unfollows":unfollows,
+                                "followings":followings,
                                 "start_time":start_time,
                                 "end_time":datetime.datetime.utcnow()})
         self.unfollowing = True

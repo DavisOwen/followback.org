@@ -6,52 +6,18 @@
   <table class="table table-dark text-white">
     <thead>
       <tr>
-        <th colspan="2" class="text-center text-nowrap">My Account</th>
+        <th colspan="2" class="text-center text-nowrap">Contact Us</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">Email</th> 
-        <td class="">{{ g.user.email }}
-          <br>
-          Unconfirmed
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Username</th>
-        <td class="">{{ g.user.username }}</td>
-      </tr>
-      <tr class="">
-        <th scope="row">Payment plan</th>
         <td class="">
-        {% if g.user.role == "Customer" %}
-        Classic</td>
-        <tr>
-          <th scope="row">Renewal Date</th>
-          <td class="">{{ g.stop_date }}</td>
-        </tr>
-        {% else %}
-        None
+          admin@followback.org
         </td>
-        {% endif %}
       </tr>
     </tbody>
   </table>
-  <br>
-  <div class="col-md-10 offset-md-1">
-  <a class="btn btn-dark" href="{{url_for('change_username',username=g.user.username) }}">Change Username</a>
-  <a class="btn btn-dark" href="{{url_for('change_password',username=g.user.username) }}">Change Password</a>
-  </div>
-  {% if g.user.confirmed == False %}
-    <div class="col-md-10 offset-md-1 form-div">
-      <h5>Email Unconfirmed</h5>
-      <hr>
-      <p>Check your spam folder for the confirmation email and mark us as not spam for future emails</p>
-      <form action="{{ url_for('account',username=g.user.username) }}" method="post">
-        <input type="submit" name="resend" value="Resend" class="btn btn-dark">
-      </form>
-    </div>
-  {% endif %}
   </div>
 </header>
 {% endblock %}

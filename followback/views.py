@@ -593,15 +593,16 @@ def add_whitelist(username):
                                         form=form)
 
         for user in users:
-            req = requests.get(user_info_string % (user))
-            if req.status_code !=200:
-                flash("Error with adding user %s" % user, 'danger')
-                return render_template('add_whitelist.html',
-                                        form=form)
-            json = req.json()
-            pk = json['user']['id']
-            pk = Whitelist(pk=pk)
-            insta_user.whitelist.append(pk)
+            if user:
+                req = requests.get(user_info_string % (user))
+                if req.status_code !=200:
+                    flash("Error with adding user %s" % user, 'danger')
+                    return render_template('add_whitelist.html',
+                                            form=form)
+                json = req.json()
+                pk = json['user']['id']
+                pk = Whitelist(pk=pk)
+                insta_user.whitelist.append(pk)
         db.session.add(insta_user)
         db.session.commit()
         flash("Successfully added users to whitelist",'success')

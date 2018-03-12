@@ -27,10 +27,10 @@
                   </p>
                   <i class="icon-paypal"></i>
                   <div class="pricing-footer">
-                    <form name="topaypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                    <form name="topaypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
                       <input type="hidden" name="cmd" value="_xclick-subscriptions">
                       <input type="hidden" name="custom" value="{{ g.user.username }}">
-                      <input type="hidden" name="business" value="admin-facilitator@followback.org">
+                      <input type="hidden" name="business" value="admin@followback.org">
                       <input type="hidden" name="item_name" value="FollowBack Instagram Bot Monthly Subscription">
                       <input type="hidden" name="item_number" value="500">
                       <input type="hidden" name="no_shipping" value="1">

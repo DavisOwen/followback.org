@@ -47,6 +47,19 @@ However, the http api does not allow one to scrape users from profiles.
 class NoPayment(Exception):
     pass
 
+class SignalHandler(object):
+    def __init__(self,bot):
+        self.retval = None
+    def signal_handler(self, sig, frm):
+        self.retval = True
+
+class BotStop(Exception):
+    pass
+
+class ProbablyBanned(Exception):
+    pass
+
+
 def check_payment(insta_user):
     user = User.query.filter_by(insta_users=insta_user).first()
     if user.paypal_transactions:
@@ -63,7 +76,7 @@ def check_payment(insta_user):
         raise NoPayment
 
 class InstagramBot:
-
+    
     user_followers = list()
     page_iter = -1
     errors = 0
@@ -83,13 +96,15 @@ class InstagramBot:
         pic_path = args.get('pic_path',None)
         scrape_user = args.get('scrape_user',None)
         upload_file = args.get('upload_file',None)
-        self.like_wait = (1.0/float(likes_per_day/57600.0))
-        self.follow_wait = (1.0/float(self.follows_per_day/57600.0))
+        self.like_wait = 57600.0/float(likes_per_day)
+        self.follow_wait = 57600.0/float(self.follows_per_day)
         self.initial_followers_count = self.get_followers()
         self.following_count= self.get_followings()
         if self.uploads_per_day is not None:
             self.upload_setup(self.uploads_per_day,uploadFile,\
                             scrape_user,caption,pic_path)
+        self.s = SignalHandler(self)
+        signal.signal(signal.SIGINT, self.s.signal_handler)
 
     def set_up(self):
         '''
@@ -234,20 +249,6 @@ class InstagramBot:
         of users
         '''
 
-        class SignalHandler(object):
-            def __init__(self,bot):
-                self.retval = None
-            def signal_handler(self, sig, frm):
-                self.retval = True
-
-        class BotStop(Exception):
-            pass
-
-        class ProbablyBanned(Exception):
-            pass
-
-        s = SignalHandler(self)
-        signal.signal(signal.SIGINT, s.signal_handler)
         self.likes = 0
         self.follows = 0
         self.last_like = self.last_follow = time.time()
@@ -255,7 +256,7 @@ class InstagramBot:
         halt = False
         while True:
             try:
-                if s.retval:
+                if self.s.retval:
                     logger.warning('Bot stopped by user')
                     raise BotStop()
                 if self.errors >= 10:
@@ -512,39 +513,86 @@ class InstagramBot:
         followings_obj = self.getter.getTotalSelfFollowings()
         followings=list()
         unfollows = 0
+        unfollow_wait = self.follow_wait/2.0
+        last_unfollow = time.time()
         for user in followings_obj:
            followings.append(user['pk']) 
-        for user in followings:
-            if user not in self.whitelist:
-                req = self.poster.unfollow(user)
-                if req.status_code == 200:
-                    logger.info("Unfollowed %s" % (user))
-                    if state:
-                        unfollows += 1
-                        followings = self.get_followings()
-                        state.update_state(state="PROGRESS",
-                                        meta={"type":"unfollow",
-                                            "unfollows":unfollows,
-                                            "followings":followings,
-                                            "start_time":start_time,
-                                            "end_time":0})
-                    time.sleep(28800/self.follows_per_day)
+        try:
+            for user in followings:
+                done = False
+                while not done:
+                    if self.s.retval:
+                        logger.warning('Bot stopped by user')
+                        raise BotStop()
+                    if self.errors >= 10:
+                        logger.error('Probably banned')
+                        raise ProbablyBanned()
+                    if (time.time() - last_unfollow) / \
+                            unfollow_wait >= 1:
+                        if user not in self.whitelist:
+                            req = self.poster.unfollow(user)
+                            if req.status_code == 200:
+                                last_unfollow = time.time()
+                                logger.info("Unfollowed %s" % (user))
+                                if state:
+                                    unfollows += 1
+                                    followings = self.get_followings()
+                                    state.update_state(state="PROGRESS",
+                                                    meta={"type":"unfollow",
+                                                        "unfollows":unfollows,
+                                                        "followings":followings,
+                                                        "start_time":start_time,
+                                                        "end_time":0})
+                                done = True
+                            else:
+                                logger.warning("Unfollowed %s failed, trying next user" % (user))
+                                logger.warning(req.text)
+                                try:
+                                    logger.warning(req.json())
+                                except:
+                                    pass
+                                self.errors += 1
+                                time.sleep(5)
+        except Exception as e:
+            if state:
+                if isinstance(e, BotStop):
+                    results = dict({"state":"STOPPED",
+                                    "type":"unfollow",
+                                    "unfollows":unfollows,
+                                    "followings":followings,
+                                    "start_time":start_time,
+                                    "end_time":datetime.datetime.utcnow()})
+                elif isinstance(e, ProbablyBanned):
+                    results = dict({"state":"TEMPORARILY BANNED",
+                                    "type":"unfollow",
+                                    "unfollows":unfollows,
+                                    "followings":followings,
+                                    "start_time":start_time,
+                                    "end_time":datetime.datetime.utcnow()})
                 else:
-                    logger.warning("Unfollowed %s failed, trying next user" % (user))
-                    logger.warning(req.text)
-                    try:
-                        logger.warning(req.json())
-                    except:
-                        pass
-                    self.errors += 1
-                    time.sleep(5)
+                    logger.error(e)
+                    logger.error(traceback.format_exc())
+                    results = dict({"state":"ERROR",
+                                    "type":"unfollow",
+                                    "unfollows":unfollows,
+                                    "followings":followings,
+                                    "start_time":start_time,
+                                    "end_time":datetime.datetime.utcnow()})
+                db.session.add(self.user)
+                db.session.commit()
+                self.getter.logout()
+                self.poster.logout()
+                return results
+
         if state:
             followings = self.get_followings()
-            results = dict({"state":"FINISHED","type":"unfollow",
+            results = dict({"state":"FINISHED",
+                                "type":"unfollow",
                                 "unfollows":unfollows,
                                 "followings":followings,
                                 "start_time":start_time,
                                 "end_time":datetime.datetime.utcnow()})
+            return results
         self.unfollowing = True
 
     def scrape_media(self):

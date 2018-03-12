@@ -6,6 +6,8 @@ from .models import User, InstaUser, PaypalTransaction, Whitelist
 from .decorators import login_required
 from .token import generate_confirmation_token, confirm_token
 from .emails import  send_email
+from config import PAYPAL_LOG_FILE, INSTABOT_LOG_FILE, UNFOLLOWBOT_LOG_FILE
+import logging
 from datetime import datetime, date, timedelta
 from InstagramBot import InstagramBot, Getter
 from werkzeug.datastructures import ImmutableOrderedMultiDict
@@ -197,11 +199,11 @@ def ipn():
     class NotFullPayment(Exception):
         pass
 
-    filename = 'logs/paypal/%s.log' % (date.today())
-    logger = logging.getLogger(__name__)
+    filename = PAYPAL_LOG_FILE % (date.today())
     handler = logging.handlers.RotatingFileHandler(filename,'a',1*1024*1024,10)
-    logger.addHandler(handler)
-    logger.setLevel(logging.DEBUG)
+    handler.setLevel(logging.DEBUG)
+    paypal_logger = logging.getLogger('paypal')
+    paypal_logger.addHandler(handler)
     arg = ''
     request.parameter_storage_class = ImmutableOrderedMultiDict
     values = request.form
@@ -246,8 +248,8 @@ def ipn():
                 db.session.add(user)
                 db.session.commit()
         except Exception as e:
-            logger.warning(e)
-    logger.info(values)
+            paypal_logger.warning(e)
+    paypal_logger.info(values)
     return r.text
 
 @app.route('/<username>/purchase')
@@ -311,7 +313,7 @@ def instabot(self,**kwargs):
     bot.set_up()
     bot.login_poster(cookies,headers)
     if function == "bot":
-        logfile = 'logs/instabot/%s.log' % args['username']
+        logfile = INSTABOT_LOG_FILE % args['username']
         handler = logging.handlers.RotatingFileHandler(logfile,'a',1*1024*1024, 10)
         handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
         celery_logger.addHandler(handler)
@@ -336,7 +338,7 @@ def instabot(self,**kwargs):
         result = bot.loop(self,start_time)
         return result
     elif function == "unfollow":
-        logfile = 'logs/unfollowbot/%s.log' % args['username']
+        logfile = UNFOLLOWBOT_LOG_FILE % args['username']
         handler = logging.handlers.RotatingFileHandler(logfile,'a',1*1024*1024,10)
         handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
         celery_logger.addHandler(handler)
@@ -516,7 +518,7 @@ def unfollowbot(username):
         args = dict()
         args['username']=form.insta_username.data
         args['password']=form.insta_password.data
-        args['follows_per_day']=form.follows_per_day.data*2
+        args['follows_per_day']=form.follows_per_day.data
         args['use_whitelist']=form.use_whitelist.data
         bot = InstagramBot(args)
         (status,req_session,response) = bot.try_login_poster()

@@ -4,7 +4,7 @@ from celery import Celery
 from celery.utils.log import get_task_logger
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from config import ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_USE_TLS
+from config import ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_USE_TLS 
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -18,7 +18,7 @@ celery_logger = get_task_logger(__name__)
 mail = Mail(app)
 if not app.debug:
     import logging
-    from logging.handlers import SMTPHandler
+    from logging.handlers import SMTPHandler, RotatingFileHandler
     credentials=None
     secure=None
     if MAIL_USERNAME or MAIL_PASSWORD:

@@ -218,9 +218,6 @@ class AddWhitelistForm(FlaskForm):
         rv = FlaskForm.validate(self)
         if not rv:
             return False
-        if self.users.data[0] == u'':
-            self.users.errors.append('This field is required')
-            return False
         import requests
         req_string = "https://www.instagram.com/%s"
         req = requests.get(req_string % (self.insta_username.data))

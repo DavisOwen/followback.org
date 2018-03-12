@@ -206,7 +206,7 @@ class AddWhitelistForm(FlaskForm):
     insta_password = PasswordField('insta_password',
                                     validators=[DataRequired()])
 
-    users = TagListField('users',validators=[DataRequired()])
+    users = TagListField('users')
 
     make = BooleanField('make', default=False)
 

@@ -4,3 +4,5 @@ www_followback_org.ca-bundle
 www_followback_org.crt
 www_followback_org.key
 .well-known/
+config.py
+*.pyc
